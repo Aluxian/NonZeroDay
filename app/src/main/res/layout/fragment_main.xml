@@ -1,0 +1,20 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/verticalMargin"
+                android:paddingLeft="@dimen/horizontalMargin"
+                android:paddingRight="@dimen/horizontalMargin"
+                android:paddingTop="@dimen/verticalMargin">
+
+    <com.devspark.robototextview.widget.RobotoTextView
+        android:id="@+id/text_zerodays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:text="@string/zerodays"
+        android:textSize="60sp"
+        app:typeface="roboto_slab_bold"/>
+
+</RelativeLayout>

@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.aluxian.zerodays"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Remove unused fonts
+    applicationVariants.all { variant ->
+        variant.mergeAssets.doFirst {
+            File fonts = file("${projectDir}/build/intermediates/exploded-aar/" +
+                    "com.github.johnkil.android-robototextview/robototextview/2.2.0/assets/fonts")
+
+            if (fonts.exists()) {
+                for (File file : fonts.listFiles()) {
+                    if (file.getName().contains("RobotoSlab")) {
+                        //file.delete()
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.mcxiaoke.viewpagerindicator:library:2.4.1'
+    compile 'com.github.johnkil.android-robototextview:robototextview:2.2.0'
+}
