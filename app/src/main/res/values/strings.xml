@@ -4,8 +4,12 @@
     <string name="app_name">No More Zero Days</string>
     <string name="zerodays">ZERODAYS</string>
 
-    <string name="goal_yearly">Your goal for the year:</string>
-    <string name="goal_daily">Your goal for today:</string>
+    <string name="goals_yearly">Your goal for the year:</string>
+    <string name="goals_daily">Your goal for today:</string>
+
+    <string name="input_goal_yearly">What\'s your goal for the year?</string>
+    <string name="input_goal_daily">What\'s your goal for today?</string>
+    <string name="btn_next">Next</string>
 
     <string-array name="streak_variants">
         <item>You’re on a %d day streak.\nKeep going!</item>

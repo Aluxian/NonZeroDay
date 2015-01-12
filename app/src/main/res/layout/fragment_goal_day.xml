@@ -1,0 +1,24 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingBottom="56dp"
+    android:paddingLeft="@dimen/horizontalMargin"
+    android:paddingRight="@dimen/horizontalMargin"
+    android:paddingTop="@dimen/verticalMargin">
+
+    <com.devspark.robototextview.widget.RobotoTextView
+        style="@style/AppTheme.Header"
+        android:text="@string/input_goal_daily"/>
+
+    <com.aluxian.zerodays.ui.YellowEditText
+        android:id="@+id/goal_input"
+        style="@style/AppTheme.InputField"/>
+
+    <com.aluxian.zerodays.ui.YellowButton
+        android:id="@+id/btn_next"
+        style="@style/AppTheme.NextButton"/>
+
+</LinearLayout>

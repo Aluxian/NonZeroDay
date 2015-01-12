@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
-            android:text="@string/goal_yearly"
+            android:text="@string/goals_yearly"
             android:textSize="14sp"
             app:typeface="roboto_slab_regular"/>
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
-            android:text="@string/goal_daily"
+            android:text="@string/goals_daily"
             android:textSize="18sp"
             app:typeface="roboto_slab_regular"/>
 

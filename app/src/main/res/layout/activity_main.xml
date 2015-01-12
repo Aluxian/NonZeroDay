@@ -1,10 +1,17 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+    <com.aluxian.zerodays.ui.NonSwipeableViewPager
+        android:id="@+id/goals_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/verticalMargin"
+        android:alpha="0"
+        android:visibility="gone"/>
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/indicator"
@@ -12,16 +19,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/verticalMargin"
-        app:fillColor="@android:color/white"
-        app:pageColor="@color/primaryDark"
-        app:radius="4dp"
-        app:strokeColor="@android:color/transparent"/>
+        android:alpha="0"
+        android:visibility="gone"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <uk.co.androidalliance.edgeeffectoverride.ViewPager
+        android:id="@+id/main_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/indicator"
-        android:layout_marginBottom="@dimen/verticalMargin"/>
+        android:layout_marginBottom="@dimen/verticalMargin"
+        android:alpha="0"
+        android:visibility="gone"/>
 
 </RelativeLayout>
