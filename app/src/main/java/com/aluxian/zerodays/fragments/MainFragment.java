@@ -1,4 +1,4 @@
-package com.aluxian.zerodays.fragments.main;
+package com.aluxian.zerodays.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

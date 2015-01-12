@@ -4,9 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.aluxian.zerodays.fragments.goals.DayGoalFragment;
-import com.aluxian.zerodays.fragments.goals.EmptyFragment;
-import com.aluxian.zerodays.fragments.goals.YearGoalFragment;
+import com.aluxian.zerodays.fragments.MiniFragment;
 
 /**
  * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to one of the goal pages.
@@ -19,26 +17,17 @@ public class GoalsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return new YearGoalFragment();
-            case 1:
-                return new DayGoalFragment();
-            case 2:
-                return new EmptyFragment();
-        }
-
-        return null;
+        return MiniFragment.newInstance(MiniFragment.Type.values()[position]);
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return MiniFragment.Type.values().length;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return String.valueOf(position);
+        return MiniFragment.Type.values()[position].name();
     }
 
 }

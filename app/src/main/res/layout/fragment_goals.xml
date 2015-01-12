@@ -1,13 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_vertical"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/verticalMargin"
-              android:paddingLeft="@dimen/horizontalMargin"
-              android:paddingRight="@dimen/horizontalMargin"
-              android:paddingTop="@dimen/verticalMargin">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/verticalMargin"
+    android:paddingLeft="@dimen/horizontalMargin"
+    android:paddingRight="@dimen/horizontalMargin"
+    android:paddingTop="@dimen/verticalMargin">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,19 +21,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
-            android:text="@string/goals_yearly"
-            android:textSize="14sp"
-            app:typeface="roboto_slab_regular"/>
+            android:text="@string/goal_year"
+            android:textSize="16sp"
+            app:typeface="roboto_slab_bold" />
 
         <com.devspark.robototextview.widget.RobotoTextView
             android:id="@+id/text_goal_year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Read 100 books"
             android:textColor="@android:color/white"
             android:textSize="26sp"
-            app:typeface="roboto_slab_bold"/>
+            app:typeface="roboto_slab_bold"
+            tools:text="Read 100 books" />
 
     </LinearLayout>
 
@@ -47,19 +48,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
-            android:text="@string/goals_daily"
-            android:textSize="18sp"
-            app:typeface="roboto_slab_regular"/>
+            android:text="@string/goal_day"
+            android:textSize="20sp"
+            app:typeface="roboto_slab_bold" />
 
         <com.devspark.robototextview.widget.RobotoTextView
             android:id="@+id/text_goal_today"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Read 10 pages from my favourite book"
             android:textColor="@android:color/white"
             android:textSize="32sp"
-            app:typeface="roboto_slab_bold"/>
+            app:typeface="roboto_slab_bold"
+            tools:text="Read 10 pages from my favourite book" />
 
     </LinearLayout>
 

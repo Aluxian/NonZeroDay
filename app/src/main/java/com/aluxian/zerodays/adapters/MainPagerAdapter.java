@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.aluxian.zerodays.fragments.main.CalendarFragment;
-import com.aluxian.zerodays.fragments.main.GoalsFragment;
-import com.aluxian.zerodays.fragments.main.MainFragment;
+import com.aluxian.zerodays.fragments.CalendarFragment;
+import com.aluxian.zerodays.fragments.GoalsFragment;
+import com.aluxian.zerodays.fragments.MainFragment;
 
 /**
  * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to one of the main pages.

@@ -13,8 +13,8 @@ android {
         applicationId "com.aluxian.zerodays"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode gitVersionCode()
+        versionName gitVersionName()
     }
 
     buildTypes {
@@ -54,4 +54,35 @@ dependencies {
     compile 'uk.co.androidalliance:edgeeffectoverride:1.0.2'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.2.0'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+}
+
+/**
+ * Gets the version name from the latest Git tag
+ * Tags should be annotated in this format: major.minor.patch[-[alpha|beta]]
+ *
+ * @example `git tag -a "0.1.0-alpha"`
+ * @return App version name
+ */
+def gitVersionName() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'bash', '-c', 'git describe --tags'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+/**
+ * Gets the version code by counting the number of commits
+ * This way the version code is incremented automatically each release
+ *
+ * @return App version code
+ */
+def gitVersionCode() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'bash', '-c', 'git log | wc -l'
+        standardOutput = stdout
+    }
+    return Integer.parseInt(stdout.toString().trim())
 }

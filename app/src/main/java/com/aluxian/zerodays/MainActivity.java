@@ -12,10 +12,10 @@ import com.aluxian.zerodays.adapters.GoalsPagerAdapter;
 import com.aluxian.zerodays.adapters.MainPagerAdapter;
 import com.aluxian.zerodays.db.DayGoal;
 import com.aluxian.zerodays.db.YearGoal;
-import com.aluxian.zerodays.fragments.GoalFragmentCallbacks;
+import com.aluxian.zerodays.fragments.MiniFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
-public class MainActivity extends FragmentActivity implements GoalFragmentCallbacks {
+public class MainActivity extends FragmentActivity implements MiniFragment.Callbacks {
 
     private ViewPager mGoalsViewPager;
     private ViewPager mMainViewPager;
@@ -79,14 +79,14 @@ public class MainActivity extends FragmentActivity implements GoalFragmentCallba
     }
 
     @Override
-    public void onNextButtonClicked(int position) {
-        switch (position) {
-            case 0:
-                mGoalsViewPager.setCurrentItem(1);
+    public void onNextButtonClicked(MiniFragment.Type type) {
+        switch (type) {
+            case YEAR:
+                mGoalsViewPager.setCurrentItem(1); // today's goal fragment
                 break;
 
-            case 1:
-                mGoalsViewPager.setCurrentItem(2);
+            case DAY:
+                mGoalsViewPager.setCurrentItem(2); // empty fragment
                 mGoalsViewPager.animate().alpha(0).setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {}
