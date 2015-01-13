@@ -87,21 +87,7 @@ public class MainActivity extends FragmentActivity implements MiniFragment.Callb
 
             case DAY:
                 mGoalsViewPager.setCurrentItem(2); // empty fragment
-                mGoalsViewPager.animate().alpha(0).setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {}
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        mGoalsViewPager.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {}
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {}
-                });
+                mGoalsViewPager.postDelayed(() -> mGoalsViewPager.setVisibility(View.GONE), 300);
 
                 mPageIndicator.setVisibility(View.VISIBLE);
                 mPageIndicator.animate().alpha(1).translationY(0);
