@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.aluxian.zerodays.R;
 import com.devspark.robototextview.widget.RobotoButton;
 
 public class YellowButton extends RobotoButton {

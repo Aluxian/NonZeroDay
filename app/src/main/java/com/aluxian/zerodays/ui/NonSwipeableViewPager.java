@@ -17,7 +17,7 @@ public class NonSwipeableViewPager extends ViewPager {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent arg0) {
+    public boolean onInterceptTouchEvent(MotionEvent event) {
         // Don't allow swiping to switch between pages
         return false;
     }

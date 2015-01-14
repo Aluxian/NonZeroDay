@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">No More Zero Days</string>
+    <string name="app_name">Non Zero Day</string>
     <string name="btn_next">Next</string>
 
-    <string name="zerodays">ZERODAYS</string>
+    <string name="zeroday">ZERODAY</string>
 
     <string name="goal_year">Your goal for the year:</string>
     <string name="goal_day">Your goal for today:</string>

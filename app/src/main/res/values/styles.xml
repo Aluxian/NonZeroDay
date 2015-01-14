@@ -12,7 +12,9 @@
         <item name="edgeeffect_color">#99008476</item>
     </style>
 
-    <style name="AppTheme" parent="AppThemeBase" />
+    <style name="AppTheme" parent="AppThemeBase">
+        <item name="android:selectableItemBackground">@drawable/btn_background</item>
+    </style>
 
     <style name="AppTheme.CircleIndicator">
         <item name="pageColor">@color/primaryDark</item>

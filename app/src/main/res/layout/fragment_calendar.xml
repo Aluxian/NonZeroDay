@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/verticalMargin"
-                android:paddingLeft="@dimen/horizontalMargin"
-                android:paddingRight="@dimen/horizontalMargin"
-                android:paddingTop="@dimen/verticalMargin">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/verticalMargin"
+    android:paddingLeft="@dimen/horizontalMargin"
+    android:paddingRight="@dimen/horizontalMargin"
+    android:paddingTop="@dimen/verticalMargin">
 
     <com.devspark.robototextview.widget.RobotoTextView
         android:id="@+id/text_streak"
@@ -16,6 +16,6 @@
         android:gravity="center_horizontal"
         android:text="You’re on a 5 day streak.\nKeep going!"
         android:textSize="20sp"
-        app:typeface="roboto_slab_bold"/>
+        app:typeface="roboto_slab_bold" />
 
 </RelativeLayout>
