@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 
 import com.aluxian.zerodays.R;
+import com.aluxian.zerodays.Utils;
 import com.devspark.robototextview.widget.RobotoEditText;
 
 public class YellowEditText extends RobotoEditText {
@@ -16,11 +17,13 @@ public class YellowEditText extends RobotoEditText {
 
     public YellowEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Utils.initShadow(this, attrs);
         init();
     }
 
     public YellowEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        Utils.initShadow(this, attrs);
         init();
     }
 

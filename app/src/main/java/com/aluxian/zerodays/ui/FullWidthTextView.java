@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
+import com.aluxian.zerodays.Utils;
 import com.devspark.robototextview.widget.RobotoTextView;
 
 public class FullWidthTextView extends RobotoTextView {
@@ -18,10 +19,12 @@ public class FullWidthTextView extends RobotoTextView {
 
     public FullWidthTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Utils.initShadow(this, attrs);
     }
 
     public FullWidthTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        Utils.initShadow(this, attrs);
     }
 
     @Override

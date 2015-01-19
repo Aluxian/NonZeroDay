@@ -16,22 +16,26 @@
         android:layout_marginBottom="72dp"
         android:orientation="vertical">
 
-        <com.devspark.robototextview.widget.RobotoTextView
+        <com.aluxian.zerodays.ui.YellowTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
             android:text="@string/goal_year"
             android:textSize="18sp"
+            app:shadowColor="@color/yellowShadow"
+            app:shadowDy="1dp"
             app:typeface="roboto_slab_bold" />
 
-        <com.devspark.robototextview.widget.RobotoTextView
+        <com.aluxian.zerodays.ui.YellowTextView
             android:id="@+id/text_goal_year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textColor="@android:color/white"
             android:textSize="26sp"
+            app:shadowColor="@color/whiteShadow"
+            app:shadowDy="2dp"
             app:typeface="roboto_slab_bold"
             tools:text="Read 100 books" />
 
@@ -42,22 +46,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.devspark.robototextview.widget.RobotoTextView
+        <com.aluxian.zerodays.ui.YellowTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
             android:text="@string/goal_day"
             android:textSize="22sp"
+            app:shadowColor="@color/yellowShadow"
+            app:shadowDy="1dp"
             app:typeface="roboto_slab_bold" />
 
-        <com.devspark.robototextview.widget.RobotoTextView
+        <com.aluxian.zerodays.ui.YellowTextView
             android:id="@+id/text_goal_today"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textColor="@android:color/white"
             android:textSize="32sp"
+            app:shadowColor="@color/whiteShadow"
+            app:shadowDy="2dp"
             app:typeface="roboto_slab_bold"
             tools:text="Read 10 pages from my favourite book" />
 

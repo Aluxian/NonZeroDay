@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/horizontalMargin"
     android:paddingTop="@dimen/verticalMargin">
 
-    <com.devspark.robototextview.widget.RobotoTextView
+    <com.aluxian.zerodays.ui.YellowTextView
         android:id="@+id/text_streak"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +16,8 @@
         android:gravity="center_horizontal"
         android:text="You’re on a 5 day streak.\nKeep going!"
         android:textSize="20sp"
+        app:shadowColor="@color/yellowShadow"
+        app:shadowDy="1dp"
         app:typeface="roboto_slab_bold" />
 
 </RelativeLayout>

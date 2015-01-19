@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="100" android:exitFadeDuration="200">
-    <!-- Even though these two point to the same resource, have two states so the drawable will invalidate itself when coming out of pressed state. -->
-    <item android:drawable="@drawable/abc_list_selector_disabled_holo_light" android:state_enabled="false" android:state_focused="true" android:state_pressed="true" />
-    <item android:drawable="@drawable/abc_list_selector_disabled_holo_light" android:state_enabled="false" android:state_focused="true" />
-    <item android:drawable="@drawable/abc_list_selector_background_transition_holo_light" android:state_focused="true" android:state_pressed="true" />
-    <item android:drawable="@drawable/abc_list_selector_background_transition_holo_light" android:state_focused="false" android:state_pressed="true" />
-    <item android:drawable="@drawable/abc_list_focused_holo" android:state_focused="true" />
-    <item android:drawable="@android:color/transparent" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <item android:top="4dp">
+                <shape android:shape="rectangle">
+                    <corners android:radius="4dp" />
+                    <solid android:color="@color/yellowShadow" />
+                </shape>
+            </item>
+            <item android:bottom="2dp" android:top="4dp">
+                <shape android:shape="rectangle">
+                    <corners android:radius="4dp" />
+                    <solid android:color="@color/accent" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item>
+        <layer-list>
+            <item android:top="3dp">
+                <shape android:shape="rectangle">
+                    <corners android:radius="4dp" />
+                    <solid android:color="@color/yellowShadow" />
+                </shape>
+            </item>
+            <item android:bottom="3dp" android:top="3dp">
+                <shape android:shape="rectangle">
+                    <corners android:radius="4dp" />
+                    <solid android:color="@color/accent" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
 </selector>
