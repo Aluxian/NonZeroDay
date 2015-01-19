@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
 import java.util.Calendar;
+import java.util.List;
 
 @Table(name = "YearGoals")
 public class YearGoal extends Model {
@@ -34,14 +35,29 @@ public class YearGoal extends Model {
      * @return The number of goals set for the current year.
      */
     public static long getCountForThisYear() {
-        return new Select().from(YearGoal.class).where("year = ?", Calendar.getInstance().get(Calendar.YEAR)).count();
+        return new Select()
+                .from(YearGoal.class)
+                .where("year = ?", Calendar.getInstance().get(Calendar.YEAR))
+                .count();
     }
 
     /**
      * @return The goal set for this year.
      */
     public static YearGoal getForThisYear() {
-        return new Select().from(YearGoal.class).where("year = ?", Calendar.getInstance().get(Calendar.YEAR)).executeSingle();
+        return new Select()
+                .from(YearGoal.class)
+                .where("year = ?", Calendar.getInstance().get(Calendar.YEAR))
+                .executeSingle();
+    }
+
+    public static List<YearGoal> getPreviousEntries() {
+        return new Select()
+                .from(YearGoal.class)
+                .where("year < ?", Calendar.getInstance().get(Calendar.YEAR))
+                .orderBy("year DESC")
+                .limit(10)
+                .execute();
     }
 
 }
