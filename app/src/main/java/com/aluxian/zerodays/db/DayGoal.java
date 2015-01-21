@@ -75,13 +75,12 @@ public class DayGoal extends Model {
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
 
-        String q1 = "(day < ? AND month = ? AND year = ?)";
-        String q2 = "(month < ? AND year = ?)";
-        String q3 = "(year < ?)";
-
         return new Select()
                 .from(DayGoal.class)
-                .where(q1 + " OR " + q2 + " OR " + q3, day, month, year, month, year, year)
+                .where("day < ? AND month = ? AND year = ?", day, month, year)
+                .or("month < ? AND year = ?", month, year)
+                .or("year < ?", year)
+                .groupBy("description")
                 .orderBy("year DESC, month DESC, day DESC")
                 .limit(10)
                 .execute();

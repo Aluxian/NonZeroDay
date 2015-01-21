@@ -55,6 +55,7 @@ public class YearGoal extends Model {
         return new Select()
                 .from(YearGoal.class)
                 .where("year < ?", Calendar.getInstance().get(Calendar.YEAR))
+                .groupBy("description")
                 .orderBy("year DESC")
                 .limit(10)
                 .execute();

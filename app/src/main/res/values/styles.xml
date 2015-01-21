@@ -13,7 +13,7 @@
     </style>
 
     <style name="AppTheme" parent="AppThemeBase">
-        <item name="android:selectableItemBackground">@drawable/btn_background</item>
+        <!--<item name="android:selectableItemBackground">@drawable/btn_background</item>-->
     </style>
 
     <style name="AppTheme.CircleIndicator">
