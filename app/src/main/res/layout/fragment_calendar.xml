@@ -17,7 +17,6 @@
         android:text="You’re on a 5 day streak.\nKeep going!"
         android:textSize="20sp"
         app:shadowColor="@color/yellowShadow"
-        app:shadowDy="1dp"
         app:typeface="roboto_slab_bold" />
 
 </RelativeLayout>

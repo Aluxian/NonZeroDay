@@ -5,4 +5,8 @@
         <item name="android:navigationBarColor">@color/primaryDark</item>
     </style>
 
+    <style name="AppTheme.ViewPager">
+        <item name="android:colorPrimary">@color/primaryDark</item>
+    </style>
+
 </resources>

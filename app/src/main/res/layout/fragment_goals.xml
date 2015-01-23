@@ -22,9 +22,8 @@
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
             android:text="@string/goal_year"
-            android:textSize="18sp"
+            android:textSize="22sp"
             app:shadowColor="@color/yellowShadow"
-            app:shadowDy="1dp"
             app:typeface="roboto_slab_bold" />
 
         <com.aluxian.zerodays.ui.YellowTextView
@@ -35,7 +34,6 @@
             android:textColor="@android:color/white"
             android:textSize="26sp"
             app:shadowColor="@color/whiteShadow"
-            app:shadowDy="2dp"
             app:typeface="roboto_slab_bold"
             tools:text="Read 100 books" />
 
@@ -52,9 +50,8 @@
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
             android:text="@string/goal_day"
-            android:textSize="22sp"
+            android:textSize="26sp"
             app:shadowColor="@color/yellowShadow"
-            app:shadowDy="1dp"
             app:typeface="roboto_slab_bold" />
 
         <com.aluxian.zerodays.ui.YellowTextView
@@ -65,7 +62,6 @@
             android:textColor="@android:color/white"
             android:textSize="32sp"
             app:shadowColor="@color/whiteShadow"
-            app:shadowDy="2dp"
             app:typeface="roboto_slab_bold"
             tools:text="Read 10 pages from my favourite book" />
 

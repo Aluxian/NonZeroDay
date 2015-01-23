@@ -9,10 +9,10 @@
         <item name="android:windowBackground">@color/primary</item>
         <item name="android:textColor">@color/accent</item>
         <item name="vpiCirclePageIndicatorStyle">@style/AppTheme.CircleIndicator</item>
-        <item name="edgeeffect_color">#99008476</item>
     </style>
 
     <style name="AppTheme" parent="AppThemeBase">
+        <item name="edgeeffect_color">#99008476</item>
         <!--<item name="android:selectableItemBackground">@drawable/btn_background</item>-->
     </style>
 
