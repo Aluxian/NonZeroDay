@@ -3,8 +3,15 @@
 
     <color name="accent">#FFEB3B</color>
     <color name="primary">#009688</color>
-    <color name="primaryDark">#00796B</color>
+    <color name="primaryDark">#007A6E</color>
+    <color name="primaryDarkLighter">#008577</color>
+
     <color name="yellowShadow">#3C6739</color>
     <color name="whiteShadow">#00685E</color>
+
+    <color name="disabledText">#ff007063</color>
+    <color name="disabledYellow">#66B869</color>
+
+    <color name="lightRipple">#20000000</color>
 
 </resources>

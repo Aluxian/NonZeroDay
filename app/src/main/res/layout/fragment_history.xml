@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="UnusedAttribute">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/primaryDarkLighter">
+            <!--android:elevation="4dp"-->
+
+            <ImageButton
+                android:id="@+id/btn_previous"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_change_month_button"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_up" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/month_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:typeface="roboto_slab_regular"
+                tools:text="February 2015" />
+
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_change_month_button"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_down" />
+
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/week_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primaryDark"
+            android:numColumns="7"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp" />
+
+        <com.aluxian.zerodays.ui.NonSwipeableVerticalViewPager
+            android:id="@+id/month_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.aluxian.zerodays.ui.YellowTextView
+            android:id="@+id/text_streak"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginBottom="52dp"
+            android:background="@color/primary"
+            android:gravity="center"
+            tools:text="You’re on a 5 day streak.\nKeep going!"
+            android:textSize="20sp"
+            app:shadowColor="@color/yellowShadow"
+            app:typeface="roboto_slab_bold" />
+
+    </LinearLayout>
+
+    <include layout="@layout/calendar_hover_card" />
+
+    <!--<View
+        android:id="@+id/hover_card_arrow"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:alpha="0"
+        android:background="@drawable/bg_hover_card_shape"
+        android:elevation="8dp"
+        android:visibility="gone" />-->
+
+</RelativeLayout>

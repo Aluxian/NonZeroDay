@@ -1,17 +1,18 @@
 package com.aluxian.zerodays.ui;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-public class NativeNonSwipeableViewPager extends ViewPager {
+import uk.co.androidalliance.edgeeffectoverride.ViewPager;
 
-    public NativeNonSwipeableViewPager(Context context) {
+public class NonSwipeableViewPagerCompat extends ViewPager {
+
+    public NonSwipeableViewPagerCompat(Context context) {
         super(context);
     }
 
-    public NativeNonSwipeableViewPager(Context context, AttributeSet attrs) {
+    public NonSwipeableViewPagerCompat(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

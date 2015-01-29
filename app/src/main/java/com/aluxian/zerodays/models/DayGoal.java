@@ -1,4 +1,4 @@
-package com.aluxian.zerodays.db;
+package com.aluxian.zerodays.models;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -84,6 +84,39 @@ public class DayGoal extends Model {
                 .orderBy("year DESC, month DESC, day DESC")
                 .limit(10)
                 .execute();
+    }
+
+    public static DayGoal getForDate(int day, int month, int year) {
+        return new Select()
+                .from(DayGoal.class)
+                .where("day = ? AND month = ? AND year = ?", day, month, year)
+                .executeSingle();
+    }
+
+    public static boolean hasAccomplished(Calendar date) {
+        return hasAccomplished(
+                date.get(Calendar.DAY_OF_MONTH),
+                date.get(Calendar.MONTH),
+                date.get(Calendar.YEAR));
+    }
+
+    public static boolean hasAccomplished(int day, int month, int year) {
+        return new Select()
+                .from(DayGoal.class)
+                .where("day = ? AND month = ? AND year = ? AND accomplished = 1", day, month, year)
+                .count() > 0;
+    }
+
+    public static int getStreak() {
+        Calendar date = Calendar.getInstance();
+        int streak = 0;
+
+        while (hasAccomplished(date)) {
+            streak++;
+            date.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        return streak;
     }
 
 }

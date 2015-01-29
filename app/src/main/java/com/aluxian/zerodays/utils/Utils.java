@@ -1,12 +1,16 @@
-package com.aluxian.zerodays;
+package com.aluxian.zerodays.utils;
 
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.TextView;
+
+import com.aluxian.zerodays.R;
 
 public class Utils {
 
-    public static void initShadow(TextView textView, AttributeSet attrs) {
+    public static void setShadow(TextView textView, AttributeSet attrs) {
         TypedArray a = textView.getContext().obtainStyledAttributes(attrs, R.styleable.TextViewShadowDips);
         int shadowColor = a.getColor(R.styleable.TextViewShadowDips_shadowColor, 0);
 

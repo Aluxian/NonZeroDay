@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.aluxian.zerodays.ui.NonSwipeableViewPager
+    <com.aluxian.zerodays.ui.NonSwipeableViewPagerCompat
         android:id="@+id/goals_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

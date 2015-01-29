@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aluxian.zerodays.R;
-import com.aluxian.zerodays.db.DayGoal;
-import com.aluxian.zerodays.db.YearGoal;
+import com.aluxian.zerodays.models.DayGoal;
+import com.aluxian.zerodays.models.YearGoal;
 
 public class GoalsFragment extends Fragment {
 

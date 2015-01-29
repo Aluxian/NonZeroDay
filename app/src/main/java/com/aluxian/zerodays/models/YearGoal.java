@@ -1,4 +1,4 @@
-package com.aluxian.zerodays.db;
+package com.aluxian.zerodays.models;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;

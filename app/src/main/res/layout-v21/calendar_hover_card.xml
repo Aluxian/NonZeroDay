@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/hover_card"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:alpha="0"
+    android:background="@drawable/bg_hover_card_shape"
+    android:elevation="8dp"
+    android:maxWidth="180dp"
+    android:padding="12dp"
+    android:textColor="@color/primaryDark"
+    tools:text="Goal accomplished today" />

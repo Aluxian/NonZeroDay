@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="56dp"
+    android:paddingBottom="@dimen/verticalMargin"
     android:paddingLeft="@dimen/horizontalMargin"
     android:paddingRight="@dimen/horizontalMargin"
     android:paddingTop="@dimen/verticalMargin">
@@ -61,7 +61,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="56dp"
-            android:background="@drawable/btn_background"
+            android:background="@drawable/bg_next_button"
             android:text="@string/btn_next"
             android:textAllCaps="false"
             android:textColor="@color/primaryDark"

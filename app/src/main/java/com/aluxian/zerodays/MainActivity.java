@@ -9,8 +9,8 @@ import android.view.ViewTreeObserver;
 
 import com.aluxian.zerodays.adapters.GoalsPagerAdapter;
 import com.aluxian.zerodays.adapters.MainPagerAdapter;
-import com.aluxian.zerodays.db.DayGoal;
-import com.aluxian.zerodays.db.YearGoal;
+import com.aluxian.zerodays.models.DayGoal;
+import com.aluxian.zerodays.models.YearGoal;
 import com.aluxian.zerodays.fragments.InputFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -28,10 +28,10 @@ public class MainActivity extends FragmentActivity implements InputFragment.Call
 
         mGoalsViewPager = (ViewPager) findViewById(R.id.goals_pager);
         mGoalsViewPager.setAdapter(new GoalsPagerAdapter(getSupportFragmentManager()));
-        // goalsViewPager prevent sliding
 
         mMainViewPager = (ViewPager) findViewById(R.id.main_pager);
         mMainViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        mMainViewPager.setOffscreenPageLimit(3);
         mMainViewPager.setCurrentItem(1);
 
         mPageIndicator = (CirclePageIndicator) findViewById(R.id.indicator);

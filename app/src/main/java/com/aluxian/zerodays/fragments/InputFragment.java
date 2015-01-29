@@ -20,8 +20,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.aluxian.zerodays.R;
-import com.aluxian.zerodays.db.DayGoal;
-import com.aluxian.zerodays.db.YearGoal;
+import com.aluxian.zerodays.models.DayGoal;
+import com.aluxian.zerodays.models.YearGoal;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -120,7 +120,7 @@ public class InputFragment extends Fragment {
             View contentView = getActivity().findViewById(android.R.id.content);
             View hiddenView = rootView.findViewById(R.id.next_container);
 
-            contentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            /*contentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 private int mPreviousHeight;
 
                 @Override
@@ -137,7 +137,7 @@ public class InputFragment extends Fragment {
 
                     mPreviousHeight = newHeight;
                 }
-            });
+            });*/
 
             rootView.findViewById(R.id.btn_next).setOnClickListener((v) -> next());
         }

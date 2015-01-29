@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/verticalMargin"
+    android:paddingBottom="72dp"
     android:paddingLeft="@dimen/horizontalMargin"
     android:paddingRight="@dimen/horizontalMargin"
     android:paddingTop="@dimen/verticalMargin">
