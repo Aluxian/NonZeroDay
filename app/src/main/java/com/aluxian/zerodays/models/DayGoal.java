@@ -4,6 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
 
 import java.util.Calendar;
 import java.util.List;
@@ -69,6 +70,9 @@ public class DayGoal extends Model {
                 .executeSingle();
     }
 
+    /**
+     * @return A list of the last 10 entered day goals.
+     */
     public static List<DayGoal> getPreviousEntries() {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -86,6 +90,9 @@ public class DayGoal extends Model {
                 .execute();
     }
 
+    /**
+     * @return A DayGoal that corresponds to the given date.
+     */
     public static DayGoal getForDate(int day, int month, int year) {
         return new Select()
                 .from(DayGoal.class)
@@ -93,6 +100,9 @@ public class DayGoal extends Model {
                 .executeSingle();
     }
 
+    /**
+     * @return Whether the given date's goal has been marked as accomplished.
+     */
     public static boolean hasAccomplished(Calendar date) {
         return hasAccomplished(
                 date.get(Calendar.DAY_OF_MONTH),
@@ -100,6 +110,9 @@ public class DayGoal extends Model {
                 date.get(Calendar.YEAR));
     }
 
+    /**
+     * @return Whether the given date's goal has been marked as accomplished.
+     */
     public static boolean hasAccomplished(int day, int month, int year) {
         return new Select()
                 .from(DayGoal.class)
@@ -107,6 +120,9 @@ public class DayGoal extends Model {
                 .count() > 0;
     }
 
+    /**
+     * @return The number of accomplished days in a row, starting from today and going backwards in time.
+     */
     public static int getStreak() {
         Calendar date = Calendar.getInstance();
         int streak = 0;
@@ -117,6 +133,21 @@ public class DayGoal extends Model {
         }
 
         return streak;
+    }
+
+    /**
+     * Marks today as an accomplished day.
+     */
+    public static void setAccomplishedToday() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        new Update(DayGoal.class)
+                .set("accomplished = 1")
+                .where("day = ? AND month = ? AND year = ?", day, month, year)
+                .execute();
     }
 
 }

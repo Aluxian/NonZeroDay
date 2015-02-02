@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.aluxian.zerodays.R;
 import com.aluxian.zerodays.models.DayGoal;
+import com.aluxian.zerodays.utils.Async;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,9 +46,8 @@ public class MonthFragment extends Fragment {
         monthCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         monthCalendar.setTimeInMillis(getArguments().getLong(KEY_DATE_MILLIS));
 
-        List<DateInfo> datesList = buildList(monthCalendar);
         LinearLayout rootLayout = (LinearLayout) inflater.inflate(R.layout.calendar_grid, container, false);
-        populateLayout(datesList, rootLayout);
+        Async.run(() -> buildList(monthCalendar), (datesList) -> populateLayout(datesList, rootLayout));
 
         return rootLayout;
     }
@@ -145,7 +145,7 @@ public class MonthFragment extends Fragment {
         parent.addView(wrapper);
     }
 
-    public static class DateInfo {
+    public static final class DateInfo {
 
         public final int dayOfMonth;
         public final int month;
@@ -171,6 +171,10 @@ public class MonthFragment extends Fragment {
             return super.equals(o);
         }
 
+        /**
+         * @param dateInfo A DateInfo object that represents the date for comparison.
+         * @return Whether this instance represents a date in time before the given one.
+         */
         public boolean before(DateInfo dateInfo) {
             return year < dateInfo.year
                     || year == dateInfo.year && month < dateInfo.month
@@ -181,8 +185,18 @@ public class MonthFragment extends Fragment {
 
     public static interface Callbacks {
 
+        /**
+         * Called when a date is touched to show the hover card.
+         *
+         * @param x        The x coordinate of the touch.
+         * @param y        The y coordinate of the touch.
+         * @param dateInfo A DateInfo object for the touched date.
+         */
         public void showHoverCard(float x, float y, DateInfo dateInfo);
 
+        /**
+         * Called when a date is no longer being touched to hide the hover card.
+         */
         public void hideHoverCard();
 
     }

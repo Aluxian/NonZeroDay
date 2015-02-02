@@ -1,29 +1,25 @@
 package com.aluxian.zerodays.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
-public class ScrollerCustomDuration extends Scroller {
+/**
+ * A Scroller with adjustable duration.
+ */
+public class CustomDurationScroller extends Scroller {
 
+    /** The factor by which the duration will change. */
     private double mScrollFactor = 1;
 
-    public ScrollerCustomDuration(Context context) {
-        super(context);
-    }
-
-    public ScrollerCustomDuration(Context context, Interpolator interpolator) {
+    public CustomDurationScroller(Context context, Interpolator interpolator) {
         super(context, interpolator);
     }
 
-    @SuppressLint("NewApi")
-    public ScrollerCustomDuration(Context context, Interpolator interpolator, boolean flywheel) {
-        super(context, interpolator, flywheel);
-    }
-
     /**
-     * Set the factor by which the duration will change
+     * Sets the factor by which the duration will change.
+     *
+     * @param scrollFactor The new factor.
      */
     public void setScrollDurationFactor(double scrollFactor) {
         mScrollFactor = scrollFactor;

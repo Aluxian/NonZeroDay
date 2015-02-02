@@ -1,11 +1,13 @@
-package com.aluxian.zerodays.ui;
+package com.aluxian.zerodays.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.aluxian.zerodays.utils.Utils;
 import com.devspark.robototextview.widget.RobotoTextView;
 
+/**
+ * A TextView whose height is always equal to its width.
+ */
 public class SquareTextView extends RobotoTextView {
 
     public SquareTextView(Context context) {

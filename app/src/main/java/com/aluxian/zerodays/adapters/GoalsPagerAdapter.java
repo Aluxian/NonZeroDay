@@ -3,13 +3,14 @@ package com.aluxian.zerodays.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.aluxian.zerodays.fragments.InputFragment;
 
 /**
- * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to one of the goal pages.
+ * A PagerAdapter that returns a fragment corresponding to one of the goal input pages.
  */
-public class GoalsPagerAdapter extends FragmentPagerAdapter {
+public class GoalsPagerAdapter extends FragmentStatePagerAdapter {
 
     public GoalsPagerAdapter(FragmentManager fm) {
         super(fm);

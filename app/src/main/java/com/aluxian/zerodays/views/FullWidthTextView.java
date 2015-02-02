@@ -1,4 +1,4 @@
-package com.aluxian.zerodays.ui;
+package com.aluxian.zerodays.views;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -6,11 +6,15 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import com.aluxian.zerodays.utils.Utils;
+import com.aluxian.zerodays.utils.Shadow;
 import com.devspark.robototextview.widget.RobotoTextView;
 
+/**
+ * A TextView that adjusts its text size in order to fill as much width as possible.
+ */
 public class FullWidthTextView extends RobotoTextView {
 
+    /** Whether calculations have been made to adjust the text size to fill the width. */
     private boolean mWidthFilled = false;
 
     public FullWidthTextView(Context context) {
@@ -19,12 +23,12 @@ public class FullWidthTextView extends RobotoTextView {
 
     public FullWidthTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Utils.setShadow(this, attrs);
+        Shadow.setOn(this, attrs);
     }
 
     public FullWidthTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        Utils.setShadow(this, attrs);
+        Shadow.setOn(this, attrs);
     }
 
     @Override

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/verticalMargin"
+    android:paddingBottom="32dp"
     android:paddingLeft="@dimen/horizontalMargin"
     android:paddingRight="@dimen/horizontalMargin"
     android:paddingTop="@dimen/verticalMargin">
@@ -15,7 +15,7 @@
         android:layout_weight="5"
         android:gravity="bottom">
 
-        <com.aluxian.zerodays.ui.YellowTextView
+        <com.aluxian.zerodays.views.TextView
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:gravity="bottom"
         android:minHeight="56dp">
 
-        <com.aluxian.zerodays.ui.YellowAutoCompleteTextView
+        <com.aluxian.zerodays.views.AutoCompleteTextView
             android:id="@+id/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

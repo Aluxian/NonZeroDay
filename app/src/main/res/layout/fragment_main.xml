@@ -1,22 +1,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/verticalMargin"
-    android:paddingLeft="@dimen/horizontalMargin"
-    android:paddingRight="@dimen/horizontalMargin"
-    android:paddingTop="@dimen/verticalMargin">
+    android:layout_height="match_parent">
 
-    <com.aluxian.zerodays.ui.FullWidthTextView
+    <com.aluxian.zerodays.views.FullWidthTextView
+        android:id="@+id/text_nonzeroday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:alpha="0"
+        android:gravity="center_horizontal"
+        android:paddingBottom="42dp"
+        android:text="NONZeroDay!"
+        android:visibility="invisible"
+        app:shadowColor="@color/yellowShadow"
+        app:shadowDy="2dp"
+        app:typeface="roboto_slab_bold" />
+
+    <com.aluxian.zerodays.views.FullWidthTextView
         android:id="@+id/text_zeroday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/horizontalMargin"
+        android:layout_marginRight="@dimen/horizontalMargin"
+        android:alpha="0"
         android:gravity="center_horizontal"
-        android:text="@string/zeroday"
         android:paddingBottom="42dp"
+        android:text="@string/zeroday"
+        android:visibility="invisible"
         app:shadowColor="@color/yellowShadow"
         app:shadowDy="2dp"
         app:typeface="roboto_slab_bold" />
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        android:background="@drawable/bottom_shadow" />
 
 </RelativeLayout>

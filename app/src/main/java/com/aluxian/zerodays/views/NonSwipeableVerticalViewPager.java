@@ -1,17 +1,21 @@
-package com.aluxian.zerodays.ui;
+package com.aluxian.zerodays.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
+
 import android.view.MotionEvent;
 import android.view.animation.Interpolator;
 
-import com.aluxian.zerodays.utils.ScrollerCustomDuration;
+import com.aluxian.zerodays.utils.CustomDurationScroller;
+import com.aluxian.zerodays.utils.Log;
 
 import java.lang.reflect.Field;
 
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 
+/**
+ * A non-swipeable vertical ViewPager used by the calendar. The scrolling animation is slower.
+ */
 public class NonSwipeableVerticalViewPager extends VerticalViewPager {
 
     public NonSwipeableVerticalViewPager(Context context) {
@@ -41,14 +45,14 @@ public class NonSwipeableVerticalViewPager extends VerticalViewPager {
             Field interpolatorField = VerticalViewPager.class.getDeclaredField("sInterpolator");
             interpolatorField.setAccessible(true);
 
-            ScrollerCustomDuration mScroller = new ScrollerCustomDuration(getContext(), (Interpolator) interpolatorField.get(null));
+            CustomDurationScroller mScroller = new CustomDurationScroller(getContext(), (Interpolator) interpolatorField.get(null));
             mScroller.setScrollDurationFactor(3);
 
             Field scrollerField = VerticalViewPager.class.getDeclaredField("mScroller");
             scrollerField.setAccessible(true);
             scrollerField.set(this, mScroller);
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            Log.e(NonSwipeableVerticalViewPager.class.getName(), e.getMessage(), e);
+            Log.e(e);
         }
     }
 

@@ -1,16 +1,23 @@
 package com.aluxian.zerodays.utils;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.aluxian.zerodays.R;
 
-public class Utils {
+/**
+ * Helper class to simply setting a shadow on TextViews.
+ */
+public class Shadow {
 
-    public static void setShadow(TextView textView, AttributeSet attrs) {
+    /**
+     * Set a shadow on the given TextView, whose size depends on the height of the TextView.
+     *
+     * @param textView The TextView on which the shadow is applied.
+     * @param attrs    An AttributeSet used to extract the shadow's colour, radius and offsets.
+     */
+    public static void setOn(TextView textView, AttributeSet attrs) {
         TypedArray a = textView.getContext().obtainStyledAttributes(attrs, R.styleable.TextViewShadowDips);
         int shadowColor = a.getColor(R.styleable.TextViewShadowDips_shadowColor, 0);
 

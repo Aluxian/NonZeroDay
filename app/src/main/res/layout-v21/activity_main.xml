@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.aluxian.zerodays.ui.NonSwipeableViewPager
+    <com.aluxian.zerodays.views.NonSwipeableViewPager
         android:id="@+id/goals_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +27,6 @@
         android:theme="@style/AppTheme.ViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0"
         android:visibility="gone" />
 
 </RelativeLayout>

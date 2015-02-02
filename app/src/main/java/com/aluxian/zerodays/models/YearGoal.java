@@ -51,6 +51,9 @@ public class YearGoal extends Model {
                 .executeSingle();
     }
 
+    /**
+     * @return A list of the last 10 entered year goals.
+     */
     public static List<YearGoal> getPreviousEntries() {
         return new Select()
                 .from(YearGoal.class)
