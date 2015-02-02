@@ -1,5 +1,6 @@
 package com.aluxian.zerodays;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -7,12 +8,12 @@ import android.view.View;
 
 import com.aluxian.zerodays.adapters.GoalsPagerAdapter;
 import com.aluxian.zerodays.adapters.MainPagerAdapter;
-import com.aluxian.zerodays.fragments.GoalsFragment;
 import com.aluxian.zerodays.fragments.InputFragment;
-import com.aluxian.zerodays.fragments.MainFragment;
 import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.models.YearGoal;
 import com.aluxian.zerodays.utils.Async;
+import com.aluxian.zerodays.views.ContentAwareViewPager;
+import com.aluxian.zerodays.views.ContentAwareViewPagerCompat;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class MainActivity extends FragmentActivity implements InputFragment.Callbacks {
@@ -91,6 +92,14 @@ public class MainActivity extends FragmentActivity implements InputFragment.Call
                 mMainViewPager.setVisibility(View.VISIBLE);
 
                 break;
+        }
+    }
+
+    public void canSwipe(boolean canSwipe) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ((ContentAwareViewPager) mMainViewPager).canSwipe = canSwipe;
+        } else {
+            ((ContentAwareViewPagerCompat) mMainViewPager).canSwipe = canSwipe;
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.OvershootInterpolator;
 
+import com.aluxian.zerodays.MainActivity;
 import com.aluxian.zerodays.R;
 import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.utils.Async;
@@ -61,6 +62,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
+                ((MainActivity) getActivity()).canSwipe(true);
                 mShadowView.animate().alpha(0);
 
                 Point screenSize = new Point();
@@ -101,6 +103,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_DOWN:
+                ((MainActivity) getActivity()).canSwipe(false);
                 mShadowView.animate().alpha(1);
 
                 mZeroDayView.animate()

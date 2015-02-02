@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.aluxian.zerodays.MainActivity;
 import com.aluxian.zerodays.R;
 import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.utils.AnimationEndListener;
@@ -127,6 +128,8 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
 
     @Override
     public void showHoverCard(float x, float y, MonthFragment.DateInfo dateInfo) {
+        ((MainActivity) getActivity()).canSwipe(false);
+
         Async.run(() -> DayGoal.getForDate(dateInfo.dayOfMonth, dateInfo.month, dateInfo.year), (dayGoal) -> {
             if (dayGoal != null) {
                 mHoverCardView.setText(dayGoal.description);
@@ -156,6 +159,7 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
 
     @Override
     public void hideHoverCard() {
+        ((MainActivity) getActivity()).canSwipe(true);
         mHoverCardView.animate().alpha(0).setDuration(200);
     }
 
