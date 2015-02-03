@@ -46,7 +46,7 @@ public class NonSwipeableVerticalViewPager extends VerticalViewPager {
             interpolatorField.setAccessible(true);
 
             CustomDurationScroller mScroller = new CustomDurationScroller(getContext(), (Interpolator) interpolatorField.get(null));
-            mScroller.setScrollDurationFactor(3);
+            mScroller.setScrollDurationFactor(6);
 
             Field scrollerField = VerticalViewPager.class.getDeclaredField("mScroller");
             scrollerField.setAccessible(true);

@@ -47,7 +47,7 @@ public class MonthFragment extends Fragment {
         monthCalendar.setTimeInMillis(getArguments().getLong(KEY_DATE_MILLIS));
 
         LinearLayout rootLayout = (LinearLayout) inflater.inflate(R.layout.calendar_grid, container, false);
-        Async.run(() -> buildList(monthCalendar), (datesList) -> populateLayout(datesList, rootLayout));
+        rootLayout.postDelayed(() -> Async.run(() -> buildList(monthCalendar), (datesList) -> populateLayout(datesList, rootLayout)), 300);
 
         return rootLayout;
     }
@@ -88,7 +88,7 @@ public class MonthFragment extends Fragment {
         int numWeeks = datesList.size() / 7;
 
         for (int weekIndex = 0; weekIndex < numWeeks; weekIndex++) {
-            LinearLayout rowLinearLayout = (LinearLayout) LayoutInflater.from(getActivity())
+            LinearLayout rowLinearLayout = (LinearLayout) LayoutInflater.from(rootLayout.getContext())
                     .inflate(R.layout.calendar_row, rootLayout, false);
 
             for (int j = 0; j < 7; j++) {
@@ -101,7 +101,7 @@ public class MonthFragment extends Fragment {
     }
 
     private void addCell(LinearLayout parent, DateInfo dateInfo) {
-        RelativeLayout wrapper = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(R.layout.calendar_cell, parent, false);
+        RelativeLayout wrapper = (RelativeLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.calendar_cell, parent, false);
         TextView textView = (TextView) wrapper.findViewById(R.id.text);
         textView.setText(String.valueOf(dateInfo.dayOfMonth));
 
@@ -123,7 +123,7 @@ public class MonthFragment extends Fragment {
         });
 
         if (dateInfo.isDisabled) {
-            textView.setTextColor(getActivity().getResources().getColor(R.color.disabledText));
+            textView.setTextColor(getResources().getColor(R.color.disabledText));
         }
 
         if (dateInfo.isHighlighted) {

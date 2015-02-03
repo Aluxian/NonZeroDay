@@ -2,13 +2,16 @@ package com.aluxian.zerodays;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.aluxian.zerodays.adapters.GoalsPagerAdapter;
 import com.aluxian.zerodays.adapters.MainPagerAdapter;
+import com.aluxian.zerodays.fragments.HistoryFragment;
 import com.aluxian.zerodays.fragments.InputFragment;
+import com.aluxian.zerodays.fragments.MonthFragment;
 import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.models.YearGoal;
 import com.aluxian.zerodays.utils.Async;
@@ -27,18 +30,21 @@ public class MainActivity extends FragmentActivity implements InputFragment.Call
     /** The page indicator shown at the bottom, linked to the main ViewPager. */
     private CirclePageIndicator mPageIndicator;
 
+    /** The fragment that displays the calendar. */
+    private HistoryFragment mHistoryFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Set the strict mode policy
-//        if (BuildConfig.DEBUG) {
-//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
-//            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//                    .setClassInstanceLimit(MainActivity.class, 100)
-//                    .detectAll().penaltyLog().build());
-//        }
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .setClassInstanceLimit(MainActivity.class, 100)
+                    .detectAll().penaltyLog().build());
+        }
 
         mGoalsViewPager = (ViewPager) findViewById(R.id.goals_pager);
         mGoalsViewPager.setAdapter(new GoalsPagerAdapter(getSupportFragmentManager()));
@@ -88,19 +94,38 @@ public class MainActivity extends FragmentActivity implements InputFragment.Call
                 mGoalsViewPager.postDelayed(() -> mGoalsViewPager.setVisibility(View.GONE), 1000);
 
                 mPageIndicator.setVisibility(View.VISIBLE);
+                mPageIndicator.setTranslationY(mPageIndicator.getHeight());
                 mPageIndicator.animate().alpha(1).translationY(0);
+
                 mMainViewPager.setVisibility(View.VISIBLE);
 
                 break;
         }
     }
 
+    public void setContentAwareViewPagerCallbacks(ContentAwareViewPager.Callbacks callbacks) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ((ContentAwareViewPager) mMainViewPager).setCallbacks(callbacks);
+        } else {
+            ((ContentAwareViewPagerCompat) mMainViewPager).setCallbacks(callbacks);
+        }
+    }
+
     public void canSwipe(boolean canSwipe) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ((ContentAwareViewPager) mMainViewPager).canSwipe = canSwipe;
+            ((ContentAwareViewPager) mMainViewPager).setSwipingEnabled(canSwipe);
         } else {
-            ((ContentAwareViewPagerCompat) mMainViewPager).canSwipe = canSwipe;
+            ((ContentAwareViewPagerCompat) mMainViewPager).setSwipingEnabled(canSwipe);
         }
+    }
+
+    public HistoryFragment getHistoryFragment() {
+        if (mHistoryFragment == null) {
+            mHistoryFragment = (HistoryFragment) getSupportFragmentManager()
+                    .findFragmentByTag("android:switcher:" + R.id.main_pager + ":0");
+        }
+
+        return mHistoryFragment;
     }
 
 }

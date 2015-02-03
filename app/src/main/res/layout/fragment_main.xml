@@ -14,7 +14,7 @@
         android:gravity="center_horizontal"
         android:paddingBottom="42dp"
         android:text="NONZeroDay!"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:shadowColor="@color/yellowShadow"
         app:shadowDy="2dp"
         app:typeface="roboto_slab_bold" />
@@ -30,7 +30,7 @@
         android:gravity="center_horizontal"
         android:paddingBottom="42dp"
         android:text="@string/zeroday"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:shadowColor="@color/yellowShadow"
         app:shadowDy="2dp"
         app:typeface="roboto_slab_bold" />

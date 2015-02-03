@@ -25,13 +25,14 @@ import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.utils.AnimationEndListener;
 import com.aluxian.zerodays.utils.Async;
 import com.aluxian.zerodays.utils.DpConverter;
+import com.aluxian.zerodays.views.ContentAwareViewPager;
 
 import java.util.Calendar;
 import java.util.Random;
 
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 
-public class HistoryFragment extends Fragment implements MonthFragment.Callbacks {
+public class HistoryFragment extends Fragment implements MonthFragment.Callbacks, ContentAwareViewPager.Callbacks {
 
     private static final String PREF_LONGEST_STREAK = "longest_streak";
     private static final int MONTHS_COUNT = 2400; // ~200 years
@@ -45,6 +46,7 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
 
     private SharedPreferences mSharedPrefs;
     private int mScreenWidth;
+    private boolean mHoverCardShown;
 
     @Override
     public void onAttach(Activity activity) {
@@ -79,9 +81,11 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
 
         // Create the month ViewPager of the calendar view
         VerticalViewPager monthPager = (VerticalViewPager) rootView.findViewById(R.id.month_pager);
+        monthPager.setOffscreenPageLimit(0);
         monthPager.setAdapter(new MonthsPagerAdapter(getChildFragmentManager()));
         monthPager.setOnPageChangeListener(new OnPageChangeListener());
         monthPager.setCurrentItem(MONTHS_COUNT / 2);
+        monthPager.postDelayed(() -> monthPager.setOffscreenPageLimit(1), 500);
 
         // Set the click listeners for the calendar buttons
         rootView.findViewById(R.id.btn_previous)
@@ -90,10 +94,12 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
                 .setOnClickListener(v -> monthPager.setCurrentItem(monthPager.getCurrentItem() + 1, true));
 
         updateStreakText();
+        ((MainActivity) getActivity()).setContentAwareViewPagerCallbacks(this);
+
         return rootView;
     }
 
-    private void updateStreakText() {
+    public void updateStreakText() {
         Async.run(DayGoal::getStreak, (streak) -> {
             int longestStreak = mSharedPrefs.getInt(PREF_LONGEST_STREAK, 0);
 
@@ -128,7 +134,11 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
 
     @Override
     public void showHoverCard(float x, float y, MonthFragment.DateInfo dateInfo) {
-        ((MainActivity) getActivity()).canSwipe(false);
+        if (mHoverCardShown) {
+            return;
+        }
+
+        mHoverCardShown = true;
 
         Async.run(() -> DayGoal.getForDate(dateInfo.dayOfMonth, dateInfo.month, dateInfo.year), (dayGoal) -> {
             if (dayGoal != null) {
@@ -159,8 +169,15 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
 
     @Override
     public void hideHoverCard() {
-        ((MainActivity) getActivity()).canSwipe(true);
+        mHoverCardShown = false;
         mHoverCardView.animate().alpha(0).setDuration(200);
+    }
+
+    @Override
+    public void isSwipingAway() {
+        if (mHoverCardShown) {
+            hideHoverCard();
+        }
     }
 
     private class MonthsPagerAdapter extends FragmentStatePagerAdapter {

@@ -10,7 +10,8 @@ import android.view.MotionEvent;
  */
 public class ContentAwareViewPager extends ViewPager {
 
-    public boolean canSwipe = true;
+    private Callbacks mCallbacks;
+    private boolean mCanSwipe = true;
 
     public ContentAwareViewPager(Context context) {
         super(context);
@@ -22,12 +23,33 @@ public class ContentAwareViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return canSwipe && super.onInterceptTouchEvent(event);
+        return mCanSwipe && super.onInterceptTouchEvent(event);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return canSwipe && super.onTouchEvent(event);
+        if (mCallbacks != null && event.getAction() == MotionEvent.ACTION_MOVE) {
+            mCallbacks.isSwipingAway();
+        }
+
+        return mCanSwipe && super.onTouchEvent(event);
+    }
+
+    public void setSwipingEnabled(boolean enabled) {
+        mCanSwipe = enabled;
+    }
+
+    public void setCallbacks(Callbacks callbacks) {
+        mCallbacks = callbacks;
+    }
+
+    public static interface Callbacks {
+
+        /**
+         * Called when the user starts swiping the ViewPager.
+         */
+        public void isSwipingAway();
+
     }
 
 }

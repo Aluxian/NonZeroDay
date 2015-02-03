@@ -33,10 +33,8 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
 
         Async.run(DayGoal::getForToday, (dayGoal) -> {
             if (dayGoal.accomplished) {
-                mDoneView.post(() -> {
-                    mDoneView.setVisibility(View.VISIBLE);
-                    mDoneView.animate().alpha(1f);
-                });
+                mDoneView.setVisibility(View.VISIBLE);
+                mDoneView.animate().alpha(1f);
             } else {
                 mZeroDayView.setOnTouchListener(this);
                 mZeroDayView.setVisibility(View.VISIBLE);
@@ -77,6 +75,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
                             .scaleX(0.5f)
                             .scaleY(0.5f);
 
+                    mDoneView.setVisibility(View.VISIBLE);
                     mDoneView.setScaleX(0);
                     mDoneView.setScaleY(0);
 
@@ -87,6 +86,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
                             .scaleY(1)
                             .alpha(1);
 
+                    ((MainActivity) getActivity()).getHistoryFragment().updateStreakText();
                     Async.run(DayGoal::setAccomplishedToday);
                 } else {
                     mZeroDayView.animate()
