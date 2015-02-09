@@ -15,7 +15,6 @@
     <string name="hover_nothing">Nothing done this day.</string>
 
     <string name="streak_nothing">Accomplish your goal every day to make streaks.</string>
-    <string name="streak_longest">Your longest streak: %s.</string>
     <string name="streak_one_day">You\'re on a one day streak.\nYou can do it!</string>
 
     <string-array name="streak_variants">

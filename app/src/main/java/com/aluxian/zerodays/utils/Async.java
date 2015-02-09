@@ -31,14 +31,20 @@ public class Async {
     /**
      * Run fn in a background thread.
      *
-     * @param fn The function to execute in background.
+     * @param fn       The function to execute in background.
+     * @param runnable A Runnable to be executed after fn is called.
      */
-    public static void run(Runnable fn) {
+    public static void run(Runnable fn, Runnable runnable) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 fn.run();
                 return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                runnable.run();
             }
         }.execute();
     }

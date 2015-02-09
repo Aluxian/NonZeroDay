@@ -12,7 +12,7 @@ import uk.co.androidalliance.edgeeffectoverride.ViewPager;
  */
 public class ContentAwareViewPagerCompat extends ViewPager {
 
-    private ContentAwareViewPager.Callbacks mCallbacks;
+    private ContentAwareViewPager.SwipeListener mSwipeListener;
     private boolean mCanSwipe = true;
 
     public ContentAwareViewPagerCompat(Context context) {
@@ -30,8 +30,8 @@ public class ContentAwareViewPagerCompat extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mCallbacks != null && event.getAction() == MotionEvent.ACTION_MOVE) {
-            mCallbacks.isSwipingAway();
+        if (mSwipeListener != null && event.getAction() == MotionEvent.ACTION_MOVE) {
+            mSwipeListener.isSwipingAway();
         }
 
         return mCanSwipe && super.onTouchEvent(event);
@@ -41,8 +41,8 @@ public class ContentAwareViewPagerCompat extends ViewPager {
         mCanSwipe = enabled;
     }
 
-    public void setCallbacks(ContentAwareViewPager.Callbacks callbacks) {
-        mCallbacks = callbacks;
+    public void setCallbacks(ContentAwareViewPager.SwipeListener swipeListener) {
+        mSwipeListener = swipeListener;
     }
 
 }

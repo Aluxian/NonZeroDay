@@ -1,15 +1,12 @@
 package com.aluxian.zerodays.fragments;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +18,7 @@ import android.widget.TextView;
 
 import com.aluxian.zerodays.MainActivity;
 import com.aluxian.zerodays.R;
+import com.aluxian.zerodays.models.DateInfo;
 import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.utils.AnimationEndListener;
 import com.aluxian.zerodays.utils.Async;
@@ -30,28 +28,31 @@ import com.aluxian.zerodays.views.ContentAwareViewPager;
 import java.util.Calendar;
 import java.util.Random;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 
-public class HistoryFragment extends Fragment implements MonthFragment.Callbacks, ContentAwareViewPager.Callbacks {
+public class HistoryFragment extends Fragment implements MonthFragment.HoverCardCallbacks, ContentAwareViewPager.SwipeListener {
 
-    private static final String PREF_LONGEST_STREAK = "longest_streak";
     private static final int MONTHS_COUNT = 2400; // ~200 years
 
-    private TextView mCalendarTitleTextView;
-    private TextView mHoverCardView;
-    private TextView mStreakTextView;
+    @InjectView(R.id.month_name) TextView mCalendarTitleTextView;
+    @InjectView(R.id.hover_card) TextView mHoverCardView;
+    @InjectView(R.id.text_streak) TextView mStreakTextView;
+    @InjectView(R.id.month_pager) VerticalViewPager mMonthPager;
 
     private String[] mStreakVariants;
     private String[] mMonthNames;
 
-    private SharedPreferences mSharedPrefs;
     private int mScreenWidth;
+    private long mLastPageChange;
     private boolean mHoverCardShown;
+    private boolean mAnimateMonthTitleChange;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(activity);
 
         // Calculate the width of the screen
         Point screenSize = new Point();
@@ -65,11 +66,8 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Find views
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-        mCalendarTitleTextView = (TextView) rootView.findViewById(R.id.month_name);
-        mStreakTextView = (TextView) rootView.findViewById(R.id.text_streak);
-        mHoverCardView = (TextView) rootView.findViewById(R.id.hover_card);
+        ButterKnife.inject(this, rootView);
 
         // Set the calendar title
         mCalendarTitleTextView.setText(getCalendarTitle(Calendar.getInstance()));
@@ -80,18 +78,15 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
         weekDaysGrid.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.calendar_week_day, weekDays));
 
         // Create the month ViewPager of the calendar view
-        VerticalViewPager monthPager = (VerticalViewPager) rootView.findViewById(R.id.month_pager);
-        monthPager.setOffscreenPageLimit(0);
-        monthPager.setAdapter(new MonthsPagerAdapter(getChildFragmentManager()));
-        monthPager.setOnPageChangeListener(new OnPageChangeListener());
-        monthPager.setCurrentItem(MONTHS_COUNT / 2);
-        monthPager.postDelayed(() -> monthPager.setOffscreenPageLimit(1), 500);
+        mMonthPager.setOffscreenPageLimit(0);
+        mMonthPager.setAdapter(new MonthsPagerAdapter(getChildFragmentManager()));
+        mMonthPager.setOnPageChangeListener(new OnPageChangeListener());
+        mMonthPager.setCurrentItem(MONTHS_COUNT / 2);
 
-        // Set the click listeners for the calendar buttons
-        rootView.findViewById(R.id.btn_previous)
-                .setOnClickListener(v -> monthPager.setCurrentItem(monthPager.getCurrentItem() - 1, true));
-        rootView.findViewById(R.id.btn_next)
-                .setOnClickListener(v -> monthPager.setCurrentItem(monthPager.getCurrentItem() + 1, true));
+        // Delay adding more pages
+        mMonthPager.postDelayed(() -> mMonthPager.setOffscreenPageLimit(1), 500);
+        mMonthPager.postDelayed(() -> mMonthPager.setOffscreenPageLimit(2), 750);
+        mMonthPager.postDelayed(() -> mMonthPager.setOffscreenPageLimit(3), 1000);
 
         updateStreakText();
         ((MainActivity) getActivity()).setContentAwareViewPagerCallbacks(this);
@@ -99,18 +94,33 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
+
+    @OnClick(R.id.btn_previous)
+    void buttonClickPrevious() {
+        if (System.currentTimeMillis() - mLastPageChange > 200) {
+            mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() - 1, true);
+            mLastPageChange = System.currentTimeMillis();
+        }
+    }
+
+    @OnClick(R.id.btn_next)
+    void buttonClickNext() {
+        if (System.currentTimeMillis() - mLastPageChange > 200) {
+            mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() + 1, true);
+            mLastPageChange = System.currentTimeMillis();
+        }
+    }
+
     public void updateStreakText() {
         Async.run(DayGoal::getStreak, (streak) -> {
-            int longestStreak = mSharedPrefs.getInt(PREF_LONGEST_STREAK, 0);
-
             switch (streak) {
                 case 0:
-                    if (longestStreak > 0) {
-                        mStreakTextView.setText(getResources().getString(R.string.streak_longest, longestStreak));
-                    } else {
-                        mStreakTextView.setText(R.string.streak_nothing);
-                    }
-
+                    mStreakTextView.setText(R.string.streak_nothing);
                     break;
 
                 case 1:
@@ -121,10 +131,6 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
                     mStreakTextView.setText(String.format(mStreakVariants[new Random().nextInt(mStreakVariants.length)], streak));
                     break;
             }
-
-            if (streak > longestStreak) {
-                mSharedPrefs.edit().putInt(PREF_LONGEST_STREAK, streak).apply();
-            }
         });
     }
 
@@ -133,7 +139,7 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
     }
 
     @Override
-    public void showHoverCard(float x, float y, MonthFragment.DateInfo dateInfo) {
+    public void showHoverCard(float x, float y, DateInfo dateInfo) {
         if (mHoverCardShown) {
             return;
         }
@@ -182,7 +188,7 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
 
     private class MonthsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public MonthsPagerAdapter(FragmentManager fm) {
+        private MonthsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -219,9 +225,7 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
             calendar.set(Calendar.DAY_OF_MONTH, 1);
             calendar.add(Calendar.MONTH, offset);
 
-            if (TextUtils.isEmpty(mCalendarTitleTextView.getText())) {
-                mCalendarTitleTextView.setText(getCalendarTitle(calendar));
-            } else {
+            if (mAnimateMonthTitleChange) {
                 TitleAnimation titleAnimation = position > mPreviousPage ? TitleAnimation.UP : TitleAnimation.DOWN;
                 Animation animation = AnimationUtils.loadAnimation(getActivity(), titleAnimation.anim1);
                 animation.setAnimationListener(new AnimationEndListener() {
@@ -233,6 +237,9 @@ public class HistoryFragment extends Fragment implements MonthFragment.Callbacks
                 });
 
                 mCalendarTitleTextView.startAnimation(animation);
+            } else {
+                mCalendarTitleTextView.setText(getCalendarTitle(calendar));
+                mAnimateMonthTitleChange = true;
             }
 
             mPreviousPage = position;

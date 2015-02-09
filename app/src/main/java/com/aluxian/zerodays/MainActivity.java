@@ -11,7 +11,7 @@ import com.aluxian.zerodays.adapters.GoalsPagerAdapter;
 import com.aluxian.zerodays.adapters.MainPagerAdapter;
 import com.aluxian.zerodays.fragments.HistoryFragment;
 import com.aluxian.zerodays.fragments.InputFragment;
-import com.aluxian.zerodays.fragments.MonthFragment;
+import com.aluxian.zerodays.fragments.MainFragment;
 import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.models.YearGoal;
 import com.aluxian.zerodays.utils.Async;
@@ -19,42 +19,39 @@ import com.aluxian.zerodays.views.ContentAwareViewPager;
 import com.aluxian.zerodays.views.ContentAwareViewPagerCompat;
 import com.viewpagerindicator.CirclePageIndicator;
 
-public class MainActivity extends FragmentActivity implements InputFragment.Callbacks {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+public class MainActivity extends FragmentActivity
+        implements MainFragment.DismissListener, MainFragment.SwipeListener, InputFragment.NextButtonListener {
 
     /** The ViewPager that displays the goal input fragments. */
-    private ViewPager mGoalsViewPager;
+    @InjectView(R.id.goals_pager) ViewPager mGoalsViewPager;
 
     /** The main ViewPager that displays the 3 fragments: history, status and active goals. */
-    private ViewPager mMainViewPager;
+    @InjectView(R.id.main_pager) ViewPager mMainViewPager;
 
     /** The page indicator shown at the bottom, linked to the main ViewPager. */
-    private CirclePageIndicator mPageIndicator;
-
-    /** The fragment that displays the calendar. */
-    private HistoryFragment mHistoryFragment;
+    @InjectView(R.id.indicator) CirclePageIndicator mPageIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         // Set the strict mode policy
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .setClassInstanceLimit(MainActivity.class, 100)
-                    .detectAll().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
         }
 
-        mGoalsViewPager = (ViewPager) findViewById(R.id.goals_pager);
         mGoalsViewPager.setAdapter(new GoalsPagerAdapter(getSupportFragmentManager()));
 
-        mMainViewPager = (ViewPager) findViewById(R.id.main_pager);
         mMainViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         mMainViewPager.setOffscreenPageLimit(3);
         mMainViewPager.setCurrentItem(1);
 
-        mPageIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mPageIndicator.setViewPager(mMainViewPager);
 
         Async.run(DayGoal::getCountForToday, (countToday) -> {
@@ -103,14 +100,15 @@ public class MainActivity extends FragmentActivity implements InputFragment.Call
         }
     }
 
-    public void setContentAwareViewPagerCallbacks(ContentAwareViewPager.Callbacks callbacks) {
+    public void setContentAwareViewPagerCallbacks(ContentAwareViewPager.SwipeListener swipeListener) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ((ContentAwareViewPager) mMainViewPager).setCallbacks(callbacks);
+            ((ContentAwareViewPager) mMainViewPager).setCallbacks(swipeListener);
         } else {
-            ((ContentAwareViewPagerCompat) mMainViewPager).setCallbacks(callbacks);
+            ((ContentAwareViewPagerCompat) mMainViewPager).setCallbacks(swipeListener);
         }
     }
 
+    @Override
     public void canSwipe(boolean canSwipe) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ((ContentAwareViewPager) mMainViewPager).setSwipingEnabled(canSwipe);
@@ -119,13 +117,11 @@ public class MainActivity extends FragmentActivity implements InputFragment.Call
         }
     }
 
-    public HistoryFragment getHistoryFragment() {
-        if (mHistoryFragment == null) {
-            mHistoryFragment = (HistoryFragment) getSupportFragmentManager()
-                    .findFragmentByTag("android:switcher:" + R.id.main_pager + ":0");
-        }
-
-        return mHistoryFragment;
+    @Override
+    public void zeroDayDismissed() {
+        HistoryFragment historyFragment = (HistoryFragment) getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + R.id.main_pager + ":0");
+        historyFragment.updateStreakText();
     }
 
 }

@@ -27,13 +27,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 public class InputFragment extends Fragment {
 
     /** A callbacks instance. */
-    private Callbacks mCallbacks;
+    private NextButtonListener mNextButtonListener;
 
     /** The input TextView. */
-    private AutoCompleteTextView mAutoCompleteTextView;
+    @InjectView(R.id.input) AutoCompleteTextView mAutoCompleteTextView;
 
     /** An animation used to shake the input TextView horizontally. */
     private ShakeAnimation mShakeAnimation = new ShakeAnimation();
@@ -52,7 +56,7 @@ public class InputFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mCallbacks = (Callbacks) activity;
+        mNextButtonListener = (NextButtonListener) activity;
         mType = Type.valueOf(getArguments().getString(Type.class.getName()));
     }
 
@@ -72,15 +76,11 @@ public class InputFragment extends Fragment {
                 break;
 
             default:
-                rootView = new View(getActivity());
-                break;
+                return new View(getActivity());
         }
 
-        if (mType == Type.EMPTY) {
-            return rootView;
-        }
+        ButterKnife.inject(this, rootView);
 
-        mAutoCompleteTextView = (AutoCompleteTextView) rootView.findViewById(R.id.input);
         mAutoCompleteTextView.getBackground().setColorFilter(getResources().getColor(R.color.accent), PorterDuff.Mode.SRC_ATOP);
         mAutoCompleteTextView.setImeOptions(mType == Type.YEAR ? EditorInfo.IME_ACTION_NEXT : EditorInfo.IME_ACTION_DONE);
         mAutoCompleteTextView.requestFocus();
@@ -96,8 +96,13 @@ public class InputFragment extends Fragment {
             return false;
         });
 
-        rootView.findViewById(R.id.btn_next).setOnClickListener((v) -> next());
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     /**
@@ -137,7 +142,8 @@ public class InputFragment extends Fragment {
     /**
      * Called when the Next button is clicked.
      */
-    private void next() {
+    @OnClick(R.id.btn_next)
+    void next() {
         String input = mAutoCompleteTextView.getText().toString().trim();
 
         if (TextUtils.isEmpty(input)) {
@@ -160,7 +166,7 @@ public class InputFragment extends Fragment {
                 break;
         }
 
-        mCallbacks.onGoalInputNextClicked(mType);
+        mNextButtonListener.onGoalInputNextClicked(mType);
     }
 
     private class TextChangedListener implements TextWatcher {
@@ -189,7 +195,7 @@ public class InputFragment extends Fragment {
         YEAR, DAY, EMPTY
     }
 
-    public static interface Callbacks {
+    public static interface NextButtonListener {
 
         /**
          * Called when the 'next' button has been clicked.

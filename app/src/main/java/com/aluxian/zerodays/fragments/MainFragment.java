@@ -1,5 +1,6 @@
 package com.aluxian.zerodays.fragments;
 
+import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,39 +11,56 @@ import android.view.ViewGroup;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.OvershootInterpolator;
 
-import com.aluxian.zerodays.MainActivity;
 import com.aluxian.zerodays.R;
 import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.utils.Async;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class MainFragment extends Fragment implements View.OnTouchListener {
 
-    private View mZeroDayView;
-    private View mShadowView;
-    private View mDoneView;
+    @InjectView(R.id.text_zeroday) View mZeroDayView;
+    @InjectView(R.id.text_nonzeroday) View mNonZeroDayView;
+    @InjectView(R.id.shadow) View mShadowView;
 
     private float mPreviousX;
     private float mPreviousY;
 
+    private DismissListener mDismissListener;
+    private SwipeListener mSwipeListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        mDismissListener = (DismissListener) activity;
+        mSwipeListener = (SwipeListener) activity;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        mZeroDayView = rootView.findViewById(R.id.text_zeroday);
-        mDoneView = rootView.findViewById(R.id.text_nonzeroday);
-        mShadowView = rootView.findViewById(R.id.shadow);
+        ButterKnife.inject(this, rootView);
 
         Async.run(DayGoal::getForToday, (dayGoal) -> {
             if (dayGoal.accomplished) {
-                mDoneView.setVisibility(View.VISIBLE);
-                mDoneView.animate().alpha(1f);
+                mNonZeroDayView.setVisibility(View.VISIBLE);
+                mNonZeroDayView.post(() -> mNonZeroDayView.animate().alpha(1f));
             } else {
                 mZeroDayView.setOnTouchListener(this);
                 mZeroDayView.setVisibility(View.VISIBLE);
-                mZeroDayView.animate().alpha(1f);
+                mZeroDayView.post(() -> mZeroDayView.animate().alpha(1f));
             }
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
     }
 
     @Override
@@ -60,7 +78,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_UP:
-                ((MainActivity) getActivity()).canSwipe(true);
+                mSwipeListener.canSwipe(true);
                 mShadowView.animate().alpha(0);
 
                 Point screenSize = new Point();
@@ -75,19 +93,19 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
                             .scaleX(0.5f)
                             .scaleY(0.5f);
 
-                    mDoneView.setVisibility(View.VISIBLE);
-                    mDoneView.setScaleX(0);
-                    mDoneView.setScaleY(0);
+                    mNonZeroDayView.setVisibility(View.VISIBLE);
+                    mNonZeroDayView.setScaleX(0);
+                    mNonZeroDayView.setScaleY(0);
 
-                    mDoneView.animate()
+                    mNonZeroDayView.animate()
                             .setStartDelay(500)
                             .setInterpolator(new OvershootInterpolator())
                             .scaleX(1)
                             .scaleY(1)
                             .alpha(1);
 
-                    ((MainActivity) getActivity()).getHistoryFragment().updateStreakText();
-                    Async.run(DayGoal::setAccomplishedToday);
+                    // Update the database
+                    Async.run(DayGoal::setAccomplishedToday, mDismissListener::zeroDayDismissed);
                 } else {
                     mZeroDayView.animate()
                             .setInterpolator(new OvershootInterpolator())
@@ -103,7 +121,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
                 break;
 
             case MotionEvent.ACTION_DOWN:
-                ((MainActivity) getActivity()).canSwipe(false);
+                mSwipeListener.canSwipe(false);
                 mShadowView.animate().alpha(1);
 
                 mZeroDayView.animate()
@@ -118,6 +136,24 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
         }
 
         return true;
+    }
+
+    public static interface DismissListener {
+
+        /**
+         * Called when the 'ZERODAY' text is pulled down and the day is marked as accomplished.
+         */
+        public void zeroDayDismissed();
+
+    }
+
+    public static interface SwipeListener {
+
+        /**
+         * Called to notify the MainActivity whether the main pager can be swiped.
+         */
+        public void canSwipe(boolean canSwipe);
+
     }
 
 }

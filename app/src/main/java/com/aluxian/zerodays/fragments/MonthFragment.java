@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aluxian.zerodays.R;
+import com.aluxian.zerodays.models.DateInfo;
 import com.aluxian.zerodays.models.DayGoal;
 import com.aluxian.zerodays.utils.Async;
 
@@ -22,7 +23,7 @@ import java.util.List;
 public class MonthFragment extends Fragment {
 
     private static final String KEY_DATE_MILLIS = "date_millis";
-    private Callbacks mCallbacks;
+    private HoverCardCallbacks mHoverCardCallbacks;
 
     public static MonthFragment newInstance(long date) {
         Bundle args = new Bundle();
@@ -37,7 +38,7 @@ public class MonthFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCallbacks = (Callbacks) getParentFragment();
+        mHoverCardCallbacks = (HoverCardCallbacks) getParentFragment();
     }
 
     @Override
@@ -46,6 +47,7 @@ public class MonthFragment extends Fragment {
         monthCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         monthCalendar.setTimeInMillis(getArguments().getLong(KEY_DATE_MILLIS));
 
+        // Create the layout
         LinearLayout rootLayout = (LinearLayout) inflater.inflate(R.layout.calendar_grid, container, false);
         rootLayout.postDelayed(() -> Async.run(() -> buildList(monthCalendar), (datesList) -> populateLayout(datesList, rootLayout)), 300);
 
@@ -84,20 +86,23 @@ public class MonthFragment extends Fragment {
         return datesList;
     }
 
+    @SuppressWarnings("Convert2streamapi")
     private void populateLayout(List<DateInfo> datesList, LinearLayout rootLayout) {
-        int numWeeks = datesList.size() / 7;
+        new Thread(() -> {
+            int numWeeks = datesList.size() / 7;
 
-        for (int weekIndex = 0; weekIndex < numWeeks; weekIndex++) {
-            LinearLayout rowLinearLayout = (LinearLayout) LayoutInflater.from(rootLayout.getContext())
-                    .inflate(R.layout.calendar_row, rootLayout, false);
+            for (int weekIndex = 0; weekIndex < numWeeks; weekIndex++) {
+                LinearLayout rowLinearLayout = (LinearLayout) LayoutInflater.from(rootLayout.getContext())
+                        .inflate(R.layout.calendar_row, rootLayout, false);
 
-            for (int j = 0; j < 7; j++) {
-                int dateIndex = weekIndex * 7 + j;
-                addCell(rowLinearLayout, datesList.get(dateIndex));
+                for (int j = 0; j < 7; j++) {
+                    int dateIndex = weekIndex * 7 + j;
+                    addCell(rowLinearLayout, datesList.get(dateIndex));
+                }
+
+                rootLayout.post(() -> rootLayout.addView(rowLinearLayout));
             }
-
-            rootLayout.addView(rowLinearLayout);
-        }
+        }).start();
     }
 
     private void addCell(LinearLayout parent, DateInfo dateInfo) {
@@ -108,14 +113,14 @@ public class MonthFragment extends Fragment {
         textView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    mCallbacks.showHoverCard(
+                    mHoverCardCallbacks.showHoverCard(
                             event.getRawX() - (event.getX() - v.getWidth() / 2),
                             event.getRawY() - (event.getY() - v.getHeight() / 2),
                             dateInfo);
                     break;
 
                 case MotionEvent.ACTION_UP:
-                    mCallbacks.hideHoverCard();
+                    mHoverCardCallbacks.hideHoverCard();
                     break;
             }
 
@@ -145,45 +150,7 @@ public class MonthFragment extends Fragment {
         parent.addView(wrapper);
     }
 
-    public static final class DateInfo {
-
-        public final int dayOfMonth;
-        public final int month;
-        public final int year;
-
-        public boolean isDisabled;
-        public boolean isHighlighted;
-        public boolean isAccomplished;
-
-        public DateInfo(Calendar date) {
-            dayOfMonth = date.get(Calendar.DAY_OF_MONTH);
-            month = date.get(Calendar.MONTH);
-            year = date.get(Calendar.YEAR);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o instanceof DateInfo) {
-                DateInfo info = (DateInfo) o;
-                return info.dayOfMonth == dayOfMonth && info.month == month && info.year == year;
-            }
-
-            return super.equals(o);
-        }
-
-        /**
-         * @param dateInfo A DateInfo object that represents the date for comparison.
-         * @return Whether this instance represents a date in time before the given one.
-         */
-        public boolean before(DateInfo dateInfo) {
-            return year < dateInfo.year
-                    || year == dateInfo.year && month < dateInfo.month
-                    || year == dateInfo.year && month == dateInfo.month && dayOfMonth < dateInfo.dayOfMonth;
-        }
-
-    }
-
-    public static interface Callbacks {
+    public static interface HoverCardCallbacks {
 
         /**
          * Called when a date is touched to show the hover card.

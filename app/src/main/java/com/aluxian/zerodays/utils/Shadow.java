@@ -2,6 +2,7 @@ package com.aluxian.zerodays.utils;
 
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.TextView;
 
 import com.aluxian.zerodays.R;
@@ -29,6 +30,7 @@ public class Shadow {
             textView.setShadowLayer(shadowRadius, shadowDx, shadowDy, shadowColor);
         }
 
+        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         a.recycle();
     }
 
