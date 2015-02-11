@@ -39,7 +39,7 @@ public class ContentAwareViewPager extends ViewPager {
         mCanSwipe = enabled;
     }
 
-    public void setCallbacks(SwipeListener swipeListener) {
+    public void setSwipeListener(SwipeListener swipeListener) {
         mSwipeListener = swipeListener;
     }
 

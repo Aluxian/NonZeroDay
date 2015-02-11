@@ -119,7 +119,7 @@ public class InputFragment extends Fragment {
                         suggestions.add(goal.description);
                     }
 
-                    mAutoCompleteTextView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.autocomplete_item, suggestions));
+                    mAutoCompleteTextView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.item_autocomplete, suggestions));
                 });
 
                 break;
@@ -132,7 +132,7 @@ public class InputFragment extends Fragment {
                         suggestions.add(goal.description);
                     }
 
-                    mAutoCompleteTextView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.autocomplete_item, suggestions));
+                    mAutoCompleteTextView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.item_autocomplete, suggestions));
                 });
 
                 break;

@@ -10,7 +10,7 @@ import android.widget.Scroller;
 public class CustomDurationScroller extends Scroller {
 
     /** The factor by which the duration will change. */
-    private double mScrollFactor = 1;
+    private float mScrollFactor = 1;
 
     public CustomDurationScroller(Context context, Interpolator interpolator) {
         super(context, interpolator);
@@ -21,7 +21,7 @@ public class CustomDurationScroller extends Scroller {
      *
      * @param scrollFactor The new factor.
      */
-    public void setScrollDurationFactor(double scrollFactor) {
+    public void setScrollDurationFactor(float scrollFactor) {
         mScrollFactor = scrollFactor;
     }
 

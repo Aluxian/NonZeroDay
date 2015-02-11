@@ -23,6 +23,9 @@ import java.util.List;
 public class MonthFragment extends Fragment {
 
     private static final String KEY_DATE_MILLIS = "date_millis";
+
+    private LayoutInflater mLayoutInflater;
+    private TextView mHighlightedCellText;
     private HoverCardCallbacks mHoverCardCallbacks;
 
     public static MonthFragment newInstance(long date) {
@@ -48,6 +51,7 @@ public class MonthFragment extends Fragment {
         monthCalendar.setTimeInMillis(getArguments().getLong(KEY_DATE_MILLIS));
 
         // Create the layout
+        mLayoutInflater = inflater;
         LinearLayout rootLayout = (LinearLayout) inflater.inflate(R.layout.calendar_grid, container, false);
         rootLayout.postDelayed(() -> Async.run(() -> buildList(monthCalendar), (datesList) -> populateLayout(datesList, rootLayout)), 300);
 
@@ -75,7 +79,7 @@ public class MonthFragment extends Fragment {
             DateInfo dateInfo = new DateInfo(monthCalendar);
             dateInfo.isDisabled = !(dateInfo.month == selectedDateInfo.month && dateInfo.year == selectedDateInfo.year);
             dateInfo.isHighlighted = dateInfo.equals(todayDateInfo);
-            dateInfo.isAccomplished = dateInfo.before(todayDateInfo) &&
+            dateInfo.isAccomplished = (dateInfo.before(todayDateInfo) || dateInfo.equals(todayDateInfo)) &&
                     DayGoal.hasAccomplished(dateInfo.dayOfMonth, dateInfo.month, dateInfo.year);
 
             datesList.add(dateInfo);
@@ -92,8 +96,7 @@ public class MonthFragment extends Fragment {
             int numWeeks = datesList.size() / 7;
 
             for (int weekIndex = 0; weekIndex < numWeeks; weekIndex++) {
-                LinearLayout rowLinearLayout = (LinearLayout) LayoutInflater.from(rootLayout.getContext())
-                        .inflate(R.layout.calendar_row, rootLayout, false);
+                LinearLayout rowLinearLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.calendar_row, rootLayout, false);
 
                 for (int j = 0; j < 7; j++) {
                     int dateIndex = weekIndex * 7 + j;
@@ -106,7 +109,7 @@ public class MonthFragment extends Fragment {
     }
 
     private void addCell(LinearLayout parent, DateInfo dateInfo) {
-        RelativeLayout wrapper = (RelativeLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.calendar_cell, parent, false);
+        RelativeLayout wrapper = (RelativeLayout) mLayoutInflater.inflate(R.layout.calendar_cell, parent, false);
         TextView textView = (TextView) wrapper.findViewById(R.id.text);
         textView.setText(String.valueOf(dateInfo.dayOfMonth));
 
@@ -132,8 +135,14 @@ public class MonthFragment extends Fragment {
         }
 
         if (dateInfo.isHighlighted) {
-            textView.setBackgroundResource(R.drawable.bg_calendar_cell_today);
-            textView.setTextColor(getResources().getColor(R.color.primaryDark));
+            mHighlightedCellText = textView;
+
+            if (dateInfo.isAccomplished) {
+                textView.setBackgroundResource(R.drawable.bg_calendar_cell_today_filled);
+                textView.setTextColor(getResources().getColor(R.color.primaryDark));
+            } else {
+                textView.setBackgroundResource(R.drawable.bg_calendar_cell_today);
+            }
 
             if (dateInfo.isDisabled) {
                 textView.getBackground().setAlpha(128);
@@ -148,6 +157,13 @@ public class MonthFragment extends Fragment {
         }
 
         parent.addView(wrapper);
+    }
+
+    public void updateHighlightedCells() {
+        if (mHighlightedCellText != null) {
+            mHighlightedCellText.setBackgroundResource(R.drawable.bg_calendar_cell_today_filled);
+            mHighlightedCellText.setTextColor(getResources().getColor(R.color.primaryDark));
+        }
     }
 
     public static interface HoverCardCallbacks {

@@ -14,13 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/primaryDarkLighter">
-            <!--android:elevation="4dp"-->
 
             <ImageButton
                 android:id="@+id/btn_previous"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_change_month_button"
+                android:background="@drawable/bg_btn_change_month"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_chevron_up" />
 
@@ -39,7 +38,7 @@
                 android:id="@+id/btn_next"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_change_month_button"
+                android:background="@drawable/bg_btn_change_month"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_chevron_down" />
 
@@ -60,17 +59,22 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <com.aluxian.zerodays.views.TextView
+        <com.aluxian.zerodays.views.ShadowedTextView
             android:id="@+id/text_streak"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginBottom="52dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="78dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"
             android:background="@color/primary"
-            android:gravity="center"
-            tools:text="You’re on a 5 day streak.\nKeep going!"
+            android:gravity="center_horizontal"
             android:textSize="20sp"
             app:shadowColor="@color/yellowShadow"
-            app:typeface="roboto_slab_bold" />
+            app:typeface="roboto_slab_bold"
+            tools:text="You’re on a 5 day streak.\nKeep going!" />
 
     </LinearLayout>
 

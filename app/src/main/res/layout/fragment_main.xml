@@ -1,9 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.aluxian.zerodays.views.FullWidthTextView
+    <com.devspark.robototextview.widget.RobotoTextView
+        android:id="@+id/coins_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_coins_no"
+        android:drawableLeft="@drawable/shape_coin_small"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/shape_coin_small"
+        android:paddingBottom="6dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="6dp"
+        android:text="0 coins"
+        android:textColor="@color/accent"
+        app:typeface="roboto_slab_regular" />
+
+    <com.aluxian.zerodays.views.ShadowedFullWidthTextView
         android:id="@+id/text_nonzeroday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,14 +31,15 @@
         android:layout_marginRight="32dp"
         android:alpha="0"
         android:gravity="center_horizontal"
-        android:paddingBottom="42dp"
-        android:text="NONZeroDay!"
+        android:singleLine="true"
+        android:text="@string/nonzeroday"
+        android:textSize="96sp"
         android:visibility="gone"
         app:shadowColor="@color/yellowShadow"
         app:shadowDy="2dp"
         app:typeface="roboto_slab_bold" />
 
-    <com.aluxian.zerodays.views.FullWidthTextView
+    <com.aluxian.zerodays.views.ShadowedFullWidthTextView
         android:id="@+id/text_zeroday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,18 +48,97 @@
         android:layout_marginRight="@dimen/horizontalMargin"
         android:alpha="0"
         android:gravity="center_horizontal"
-        android:paddingBottom="42dp"
+        android:paddingBottom="36dp"
+        android:singleLine="true"
         android:text="@string/zeroday"
+        android:textSize="96sp"
         android:visibility="gone"
         app:shadowColor="@color/yellowShadow"
         app:shadowDy="2dp"
         app:typeface="roboto_slab_bold" />
 
     <View
+        android:id="@+id/coin_pocket"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_pocket"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:translationY="36dp" />
+
+    <FrameLayout
+        android:id="@+id/big_coin_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/coin_pocket"
+        android:clipToPadding="true"
+        android:paddingBottom="6dp"
+        android:translationY="36dp">
+
+        <View
+            android:id="@+id/big_coin"
+            android:layout_width="144dp"
+            android:layout_height="144dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="@drawable/shape_coin_big"
+            android:translationY="144dp" />
+
+    </FrameLayout>
+
+    <View
         android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:alpha="0"
-        android:background="@drawable/bottom_shadow" />
+        android:background="@drawable/shape_bottom_shadow" />
+
+    <LinearLayout
+        android:id="@+id/leaderboard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="96dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:ignore="UnusedAttribute">
+
+        <LinearLayout
+            android:id="@+id/leaderboard_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/primaryDarkLighter"
+            android:elevation="4dp"
+            android:orientation="vertical">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/leaderboard_coins_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="24dp"
+                android:drawableLeft="@drawable/shape_coin_small"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/shape_coin_small"
+                android:text="0 coins"
+                android:textColor="@color/accent"
+                app:typeface="roboto_slab_regular" />
+
+            <include layout="@layout/achievements_list" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/leaderboard_trigger"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginRight="48dp"
+            android:background="@drawable/bg_leaderboard_trigger"
+            android:elevation="4dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

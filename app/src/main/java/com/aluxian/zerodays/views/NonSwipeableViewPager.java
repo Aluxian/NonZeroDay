@@ -12,8 +12,6 @@ import com.aluxian.zerodays.utils.Log;
 
 import java.lang.reflect.Field;
 
-import fr.castorflex.android.verticalviewpager.VerticalViewPager;
-
 /**
  * Non-swipeable ViewPager used to display the goal input pages. The scrolling animation is slowed down.
  */

@@ -16,7 +16,7 @@
         android:layout_marginBottom="72dp"
         android:orientation="vertical">
 
-        <com.aluxian.zerodays.views.TextView
+        <com.aluxian.zerodays.views.ShadowedTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -26,7 +26,7 @@
             app:shadowColor="@color/yellowShadow"
             app:typeface="roboto_slab_bold" />
 
-        <com.aluxian.zerodays.views.TextView
+        <com.aluxian.zerodays.views.ShadowedTextView
             android:id="@+id/text_goal_year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.aluxian.zerodays.views.TextView
+        <com.aluxian.zerodays.views.ShadowedTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -54,7 +54,7 @@
             app:shadowColor="@color/yellowShadow"
             app:typeface="roboto_slab_bold" />
 
-        <com.aluxian.zerodays.views.TextView
+        <com.aluxian.zerodays.views.ShadowedTextView
             android:id="@+id/text_goal_today"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

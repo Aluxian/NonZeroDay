@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uk.co.androidalliance.edgeeffectoverride.ListView
+    android:id="@+id/achievements"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:divider="@null"
+    android:dividerHeight="0dp"
+    android:layout_height="wrap_content"
+    android:paddingBottom="24dp" />

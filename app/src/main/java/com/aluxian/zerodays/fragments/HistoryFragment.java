@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.aluxian.zerodays.MainActivity;
 import com.aluxian.zerodays.R;
+import com.aluxian.zerodays.adapters.MonthsPagerAdapter;
 import com.aluxian.zerodays.models.DateInfo;
 import com.aluxian.zerodays.models.DayGoal;
-import com.aluxian.zerodays.utils.AnimationEndListener;
 import com.aluxian.zerodays.utils.Async;
-import com.aluxian.zerodays.utils.DpConverter;
+import com.aluxian.zerodays.utils.Dp;
 import com.aluxian.zerodays.views.ContentAwareViewPager;
+import com.devspark.robototextview.util.RobotoTypefaceManager;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -35,7 +33,8 @@ import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 
 public class HistoryFragment extends Fragment implements MonthFragment.HoverCardCallbacks, ContentAwareViewPager.SwipeListener {
 
-    private static final int MONTHS_COUNT = 2400; // ~200 years
+    /** The number of months displayed in the calendar widget. */
+    public static final int MONTHS_COUNT = 600; // ~50 years
 
     @InjectView(R.id.month_name) TextView mCalendarTitleTextView;
     @InjectView(R.id.hover_card) TextView mHoverCardView;
@@ -45,19 +44,12 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
     private String[] mStreakVariants;
     private String[] mMonthNames;
 
-    private int mScreenWidth;
     private long mLastPageChange;
     private boolean mHoverCardShown;
-    private boolean mAnimateMonthTitleChange;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // Calculate the width of the screen
-        Point screenSize = new Point();
-        getActivity().getWindowManager().getDefaultDisplay().getSize(screenSize);
-        mScreenWidth = screenSize.x;
 
         // Extract resources
         mStreakVariants = getResources().getStringArray(R.array.streak_variants);
@@ -70,7 +62,7 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
         ButterKnife.inject(this, rootView);
 
         // Set the calendar title
-        mCalendarTitleTextView.setText(getCalendarTitle(Calendar.getInstance()));
+        mCalendarTitleTextView.setText(generateCalendarTitle(Calendar.getInstance()));
 
         // Set up the week days strip
         String[] weekDays = getActivity().getResources().getStringArray(R.array.week_days);
@@ -78,19 +70,15 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
         weekDaysGrid.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.calendar_week_day, weekDays));
 
         // Create the month ViewPager of the calendar view
-        mMonthPager.setOffscreenPageLimit(0);
         mMonthPager.setAdapter(new MonthsPagerAdapter(getChildFragmentManager()));
         mMonthPager.setOnPageChangeListener(new OnPageChangeListener());
         mMonthPager.setCurrentItem(MONTHS_COUNT / 2);
 
         // Delay adding more pages
-        mMonthPager.postDelayed(() -> mMonthPager.setOffscreenPageLimit(1), 500);
-        mMonthPager.postDelayed(() -> mMonthPager.setOffscreenPageLimit(2), 750);
-        mMonthPager.postDelayed(() -> mMonthPager.setOffscreenPageLimit(3), 1000);
+        mMonthPager.postDelayed(() -> mMonthPager.setOffscreenPageLimit(2), 500);
+        mMonthPager.postDelayed(() -> mMonthPager.setOffscreenPageLimit(3), 750);
 
         updateStreakText();
-        ((MainActivity) getActivity()).setContentAwareViewPagerCallbacks(this);
-
         return rootView;
     }
 
@@ -116,6 +104,9 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
         }
     }
 
+    /**
+     * Retrieves the streak from the database and updates its TextView.
+     */
     public void updateStreakText() {
         Async.run(DayGoal::getStreak, (streak) -> {
             switch (streak) {
@@ -134,7 +125,30 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
         });
     }
 
-    private String getCalendarTitle(Calendar calendar) {
+    /**
+     * Updates the background and the text color of the currently highlighted cell.
+     */
+    @SuppressWarnings("Convert2streamapi")
+    public void updateHighlightedCells() {
+        int currentItem = mMonthPager.getCurrentItem();
+        int pageLimit = mMonthPager.getOffscreenPageLimit();
+
+        for (int i = -pageLimit; i <= pageLimit; i++) {
+            MonthFragment fragment = (MonthFragment) mMonthPager.getAdapter().instantiateItem(mMonthPager, currentItem + i);
+
+            if (fragment != null) {
+                fragment.updateHighlightedCells();
+            }
+        }
+    }
+
+    /**
+     * Generates a title for the calendar based on the given Calendar.
+     *
+     * @param calendar A Calendar instance to use.
+     * @return The generated title.
+     */
+    private String generateCalendarTitle(Calendar calendar) {
         return mMonthNames[calendar.get(Calendar.MONTH)] + " " + calendar.get(Calendar.YEAR);
     }
 
@@ -149,21 +163,33 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
         Async.run(() -> DayGoal.getForDate(dateInfo.dayOfMonth, dateInfo.month, dateInfo.year), (dayGoal) -> {
             if (dayGoal != null) {
                 mHoverCardView.setText(dayGoal.description);
+                mHoverCardView.setTypeface(
+                        RobotoTypefaceManager.obtainTypeface(getActivity(), RobotoTypefaceManager.Typeface.ROBOTO_SLAB_BOLD));
+//            } else if (dateInfo.before(new DateInfo(Calendar.getInstance()))) {
+//                mHoverCardView.setText(R.string.hover_no_goal);
+//            } else {
+//                mHoverCardView.setText(R.string.hover_future);
+//            }
             } else {
-                mHoverCardView.setText(R.string.hover_nothing);
+                mHoverCardView.setText(R.string.hover_no_goal);
+                mHoverCardView.setTypeface(
+                        RobotoTypefaceManager.obtainTypeface(getActivity(), RobotoTypefaceManager.Typeface.ROBOTO_SLAB_REGULAR));
             }
 
             mHoverCardView.post(() -> {
-                DpConverter dp = new DpConverter(getActivity());
-                int marginPx = dp.toPx(16);
+                int marginPx = Dp.toPx(16);
+                int screenWidth = getResources().getDisplayMetrics().widthPixels;
 
+                // Set position above the user's finger
                 mHoverCardView.setX(x - mHoverCardView.getWidth() / 2);
-                mHoverCardView.setY(y - dp.toPx(56) - mHoverCardView.getHeight());
+                mHoverCardView.setY(y - Dp.toPx(56) - mHoverCardView.getHeight());
 
-                if (mHoverCardView.getX() + mHoverCardView.getWidth() + marginPx > mScreenWidth) {
-                    mHoverCardView.setX(mScreenWidth - marginPx - mHoverCardView.getWidth());
+                // The card is too much to the right
+                if (mHoverCardView.getX() + mHoverCardView.getWidth() + marginPx > screenWidth) {
+                    mHoverCardView.setX(screenWidth - marginPx - mHoverCardView.getWidth());
                 }
 
+                // The card is too much to the left
                 if (mHoverCardView.getX() < marginPx) {
                     mHoverCardView.setX(marginPx);
                 }
@@ -186,33 +212,10 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
         }
     }
 
-    private class MonthsPagerAdapter extends FragmentStatePagerAdapter {
-
-        private MonthsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            int offset = position - getCount() / 2;
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
-            calendar.add(Calendar.MONTH, offset);
-
-            return MonthFragment.newInstance(calendar.getTimeInMillis());
-        }
-
-        @Override
-        public int getCount() {
-            return MONTHS_COUNT;
-        }
-
-    }
-
     private class OnPageChangeListener implements ViewPager.OnPageChangeListener {
 
-        private int mPreviousPage;
+        /** Store the previous position of the selected page. */
+        private int mPreviousPosition = -1;
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
@@ -225,24 +228,30 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
             calendar.set(Calendar.DAY_OF_MONTH, 1);
             calendar.add(Calendar.MONTH, offset);
 
-            if (mAnimateMonthTitleChange) {
-                TitleAnimation titleAnimation = position > mPreviousPage ? TitleAnimation.UP : TitleAnimation.DOWN;
+            // Update the title of the calendar widget; skip animation the first time
+            if (mPreviousPosition == -1) {
+                mCalendarTitleTextView.setText(generateCalendarTitle(calendar));
+            } else {
+                TitleAnimation titleAnimation = position > mPreviousPosition ? TitleAnimation.UP : TitleAnimation.DOWN;
                 Animation animation = AnimationUtils.loadAnimation(getActivity(), titleAnimation.anim1);
-                animation.setAnimationListener(new AnimationEndListener() {
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        mCalendarTitleTextView.setText(getCalendarTitle(calendar));
+                        mCalendarTitleTextView.setText(generateCalendarTitle(calendar));
                         mCalendarTitleTextView.startAnimation(AnimationUtils.loadAnimation(getActivity(), titleAnimation.anim2));
                     }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
                 });
 
                 mCalendarTitleTextView.startAnimation(animation);
-            } else {
-                mCalendarTitleTextView.setText(getCalendarTitle(calendar));
-                mAnimateMonthTitleChange = true;
             }
 
-            mPreviousPage = position;
+            mPreviousPosition = position;
         }
 
         @Override
@@ -250,6 +259,9 @@ public class HistoryFragment extends Fragment implements MonthFragment.HoverCard
 
     }
 
+    /**
+     * Stores animation configurations for the title TextView.
+     */
     private static enum TitleAnimation {
         UP(R.anim.fade_up_above, R.anim.fade_up_below),
         DOWN(R.anim.fade_down_below, R.anim.fade_down_above);

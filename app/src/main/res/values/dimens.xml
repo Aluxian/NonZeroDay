@@ -3,7 +3,5 @@
 
     <dimen name="horizontalMargin">16dp</dimen>
     <dimen name="verticalMargin">16dp</dimen>
-    <dimen name="translationOffset">-8dp</dimen>
-    <dimen name="spacing_medium">8dp</dimen>
 
 </resources>

@@ -3,7 +3,7 @@ package com.aluxian.zerodays.utils;
 import android.os.AsyncTask;
 
 /**
- * Helper class used to run operations off the main thread.
+ * Helper class used to run operations off the main thread by using an AsyncTask.
  */
 public class Async {
 

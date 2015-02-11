@@ -5,8 +5,6 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.view.View;
 
-import com.aluxian.zerodays.R;
-
 /**
  * A helper class that creates an animation which shakes a given view horizontally.
  */
@@ -17,7 +15,7 @@ public class ShakeAnimation {
 
     public void playOn(View view) {
         if (mValuesTranslateX == null) {
-            int delta = view.getResources().getDimensionPixelOffset(R.dimen.spacing_medium);
+            int delta = Dp.toPx(8);
             mValuesTranslateX = PropertyValuesHolder.ofKeyframe(View.TRANSLATION_X,
                     Keyframe.ofFloat(0f, 0),
                     Keyframe.ofFloat(.10f, -delta),

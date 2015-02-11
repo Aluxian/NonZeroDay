@@ -11,14 +11,9 @@ import java.util.List;
 @Table(name = "YearGoals")
 public class YearGoal extends Model {
 
-    @Column()
-    public int year;
-
-    @Column()
-    public boolean accomplished;
-
-    @Column()
-    public String description;
+    @Column public int year;
+    @Column public boolean accomplished;
+    @Column public String description;
 
     public YearGoal() {
         super();

@@ -10,7 +10,7 @@ import com.aluxian.zerodays.R;
 /**
  * Helper class to simply setting a shadow on TextViews.
  */
-public class Shadow {
+public class TextViewShadow {
 
     /**
      * Set a shadow on the given TextView, whose size depends on the height of the TextView.

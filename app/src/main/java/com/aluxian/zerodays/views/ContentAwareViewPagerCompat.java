@@ -41,7 +41,7 @@ public class ContentAwareViewPagerCompat extends ViewPager {
         mCanSwipe = enabled;
     }
 
-    public void setCallbacks(ContentAwareViewPager.SwipeListener swipeListener) {
+    public void setSwipeListener(ContentAwareViewPager.SwipeListener swipeListener) {
         mSwipeListener = swipeListener;
     }
 

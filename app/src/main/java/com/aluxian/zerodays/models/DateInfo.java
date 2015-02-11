@@ -18,16 +18,6 @@ public final class DateInfo {
         year = date.get(Calendar.YEAR);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof DateInfo) {
-            DateInfo info = (DateInfo) o;
-            return info.dayOfMonth == dayOfMonth && info.month == month && info.year == year;
-        }
-
-        return super.equals(o);
-    }
-
     /**
      * @param dateInfo A DateInfo object that represents the date for comparison.
      * @return Whether this instance represents a date in time before the given one.
@@ -36,6 +26,16 @@ public final class DateInfo {
         return year < dateInfo.year
                 || year == dateInfo.year && month < dateInfo.month
                 || year == dateInfo.year && month == dateInfo.month && dayOfMonth < dateInfo.dayOfMonth;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof DateInfo) {
+            DateInfo info = (DateInfo) o;
+            return info.dayOfMonth == dayOfMonth && info.month == month && info.year == year;
+        }
+
+        return super.equals(o);
     }
 
 }

@@ -2,8 +2,9 @@
 <resources>
 
     <string name="app_name">Non Zero Day</string>
-    <string name="btn_next">Next</string>
+    <string name="next">Next</string>
 
+    <string name="nonzeroday">NonZeroDay</string>
     <string name="zeroday">ZERODAY</string>
 
     <string name="goal_year">Your goal for the year:</string>
@@ -12,7 +13,8 @@
     <string name="input_goal_year">What\'s your goal for this year?</string>
     <string name="input_goal_day">What\'s your goal for today?</string>
 
-    <string name="hover_nothing">Nothing done this day.</string>
+    <string name="hover_no_goal">No goal for this day.</string>
+    <string name="hover_future">Make this one of your best days!</string>
 
     <string name="streak_nothing">Accomplish your goal every day to make streaks.</string>
     <string name="streak_one_day">You\'re on a one day streak.\nYou can do it!</string>

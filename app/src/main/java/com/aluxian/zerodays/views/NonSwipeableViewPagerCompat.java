@@ -11,7 +11,6 @@ import com.aluxian.zerodays.utils.Log;
 
 import java.lang.reflect.Field;
 
-import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 import uk.co.androidalliance.edgeeffectoverride.ViewPager;
 
 /**

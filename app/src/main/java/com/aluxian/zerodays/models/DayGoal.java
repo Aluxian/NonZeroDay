@@ -12,20 +12,11 @@ import java.util.List;
 @Table(name = "DayGoals")
 public class DayGoal extends Model {
 
-    @Column()
-    public int day;
-
-    @Column()
-    public int month;
-
-    @Column()
-    public int year;
-
-    @Column()
-    public boolean accomplished;
-
-    @Column()
-    public String description;
+    @Column public int day;
+    @Column public int month;
+    @Column public int year;
+    @Column public boolean accomplished;
+    @Column public String description;
 
     public DayGoal() {
         super();
@@ -148,6 +139,16 @@ public class DayGoal extends Model {
                 .set("accomplished = 1")
                 .where("day = ? AND month = ? AND year = ?", day, month, year)
                 .execute();
+    }
+
+    /**
+     * @return The number of entries that have the 'accomplished' field set to 1.
+     */
+    public static int getCountDaysAccomplished() {
+        return new Select()
+                .from(DayGoal.class)
+                .where("accomplished = 1")
+                .count();
     }
 
 }

@@ -2,7 +2,6 @@ package com.aluxian.zerodays;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -41,35 +40,40 @@ public class MainActivity extends FragmentActivity
         ButterKnife.inject(this);
 
         // Set the strict mode policy
-        if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
-        }
+//        if (BuildConfig.DEBUG) {
+//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
+//            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
+//        }
 
+        // Set up the view pagers
         mGoalsViewPager.setAdapter(new GoalsPagerAdapter(getSupportFragmentManager()));
-
         mMainViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         mMainViewPager.setOffscreenPageLimit(3);
         mMainViewPager.setCurrentItem(1);
-
         mPageIndicator.setViewPager(mMainViewPager);
 
+        // Make the History fragment listen to the main view pager's swipes
+        mMainViewPager.post(() -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ((ContentAwareViewPager) mMainViewPager).setSwipeListener(getHistoryFragment());
+            } else {
+                ((ContentAwareViewPagerCompat) mMainViewPager).setSwipeListener(getHistoryFragment());
+            }
+        });
+
+        // Check if there's a goal set for today and display the appropriate view pager
         Async.run(DayGoal::getCountForToday, (countToday) -> {
             if (countToday > 0) {
-                mMainViewPager.post(() -> {
-                    mMainViewPager.setVisibility(View.VISIBLE);
-                    mMainViewPager.animate().setStartDelay(200).alpha(1);
+                mMainViewPager.setVisibility(View.VISIBLE);
+                mPageIndicator.setVisibility(View.VISIBLE);
 
-                    mPageIndicator.setVisibility(View.VISIBLE);
-                    mPageIndicator.animate().setStartDelay(200).alpha(1);
-                });
+                mMainViewPager.post(() -> mMainViewPager.animate().setStartDelay(200).alpha(1));
+                mPageIndicator.post(() -> mPageIndicator.animate().setStartDelay(200).alpha(1));
             } else {
-                mGoalsViewPager.post(() -> {
-                    mGoalsViewPager.setVisibility(View.VISIBLE);
-                    mGoalsViewPager.animate().setStartDelay(200).alpha(1);
-                });
+                mGoalsViewPager.setVisibility(View.VISIBLE);
+                mGoalsViewPager.post(() -> mGoalsViewPager.animate().setStartDelay(200).alpha(1));
 
-                // If a goal for the year is already set, move to the day goal input screen
+                // If a goal for the year is already set, move to the input screen for today's goal
                 Async.run(YearGoal::getCountForThisYear, (countYear) -> {
                     if (countYear > 0) {
                         mGoalsViewPager.setCurrentItem(1);
@@ -83,11 +87,11 @@ public class MainActivity extends FragmentActivity
     public void onGoalInputNextClicked(InputFragment.Type type) {
         switch (type) {
             case YEAR:
-                mGoalsViewPager.setCurrentItem(1); // move to today's goal fragment
+                mGoalsViewPager.setCurrentItem(1); // move to today's goal input fragment
                 break;
 
             case DAY:
-                mGoalsViewPager.setCurrentItem(2); // move to empty fragment
+                mGoalsViewPager.setCurrentItem(2); // move to the empty fragment
                 mGoalsViewPager.postDelayed(() -> mGoalsViewPager.setVisibility(View.GONE), 1000);
 
                 mPageIndicator.setVisibility(View.VISIBLE);
@@ -95,16 +99,7 @@ public class MainActivity extends FragmentActivity
                 mPageIndicator.animate().alpha(1).translationY(0);
 
                 mMainViewPager.setVisibility(View.VISIBLE);
-
                 break;
-        }
-    }
-
-    public void setContentAwareViewPagerCallbacks(ContentAwareViewPager.SwipeListener swipeListener) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ((ContentAwareViewPager) mMainViewPager).setCallbacks(swipeListener);
-        } else {
-            ((ContentAwareViewPagerCompat) mMainViewPager).setCallbacks(swipeListener);
         }
     }
 
@@ -119,9 +114,15 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void zeroDayDismissed() {
-        HistoryFragment historyFragment = (HistoryFragment) getSupportFragmentManager()
-                .findFragmentByTag("android:switcher:" + R.id.main_pager + ":0");
-        historyFragment.updateStreakText();
+        getHistoryFragment().updateStreakText();
+        getHistoryFragment().updateHighlightedCells();
+    }
+
+    /**
+     * @return An instance of HistoryFragment from the main view pager.
+     */
+    private HistoryFragment getHistoryFragment() {
+        return (HistoryFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.main_pager + ":0");
     }
 
 }

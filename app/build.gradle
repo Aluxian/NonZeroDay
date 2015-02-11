@@ -56,6 +56,8 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.github.castorflex.verticalviewpager:library:19.0.1'
+    compile 'me.grantland:autofittextview:0.2.0'
+    compile 'com.github.itsmechlark:android-sliding-layer-lib:1.0.1'
 }
 
 /**
