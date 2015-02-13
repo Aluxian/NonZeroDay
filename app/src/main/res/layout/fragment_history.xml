@@ -53,13 +53,13 @@
             android:paddingBottom="6dp"
             android:paddingTop="6dp" />
 
-        <com.aluxian.zerodays.views.NonSwipeableVerticalViewPager
+        <com.aluxian.nonzeroday.views.NonSwipeableVerticalViewPager
             android:id="@+id/month_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <com.aluxian.zerodays.views.ShadowedTextView
+        <com.aluxian.nonzeroday.views.ShadowedTextView
             android:id="@+id/text_streak"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

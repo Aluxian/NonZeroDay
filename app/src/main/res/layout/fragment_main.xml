@@ -22,7 +22,7 @@
         android:textColor="@color/accent"
         app:typeface="roboto_slab_regular" />
 
-    <com.aluxian.zerodays.views.ShadowedFullWidthTextView
+    <com.aluxian.nonzeroday.views.ShadowedFullWidthTextView
         android:id="@+id/text_nonzeroday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         app:shadowDy="2dp"
         app:typeface="roboto_slab_bold" />
 
-    <com.aluxian.zerodays.views.ShadowedFullWidthTextView
+    <com.aluxian.nonzeroday.views.ShadowedFullWidthTextView
         android:id="@+id/text_zeroday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
