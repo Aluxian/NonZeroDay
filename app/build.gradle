@@ -8,18 +8,17 @@ repositories {
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
         applicationId "com.aluxian.zerodays"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode gitVersionCode()
         versionName gitVersionName()
+        versionCode gitVersionCode()
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -48,16 +47,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:cardview-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.mcxiaoke.viewpagerindicator:library:2.4.1'
     compile 'uk.co.androidalliance:edgeeffectoverride:1.0.2'
-    compile 'com.github.johnkil.android-robototextview:robototextview:2.2.0'
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
-    compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.github.castorflex.verticalviewpager:library:19.0.1'
+    compile 'com.github.johnkil.android-robototextview:robototextview:2.2.0'
     compile 'me.grantland:autofittextview:0.2.0'
-    compile 'com.github.itsmechlark:android-sliding-layer-lib:1.0.1'
 }
 
 /**

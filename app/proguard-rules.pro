@@ -20,11 +20,32 @@
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
 
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
+# ActiveAndroid
+-keep class com.activeandroid.** { *; }
+-keep class * extends com.activeandroid.Model { *; }
+-keep class * extends com.activeandroid.serializer.TypeSerializer { *; }
+-keepattributes Column, Table
 
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
+# Picasso, OkHttp
+-keep class com.google.inject.** { *; }
+-keep class org.apache.http.** { *; }
+-keep class org.apache.james.mime4j.** { *; }
+-keep class javax.inject.** { *; }
+-dontwarn com.google.appengine.api.urlfetch.*
+-dontwarn com.squareup.okhttp.**
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.**
+-dontwarn rx.**
+
+# Gson
+-keep class com.google.gson.** { *; }
+-keep class com.google.gson.stream.** { *; }
+-keep class sun.misc.Unsafe { *; }
+-keepattributes Expose, SerializedName, Since, Until
+-keepclasseswithmembers class * { @com.google.gson.annotations.Expose <fields>; }
+
+# Retrolambda
+-dontwarn java.lang.invoke.*
