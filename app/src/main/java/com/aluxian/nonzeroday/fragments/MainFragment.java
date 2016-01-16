@@ -79,7 +79,7 @@ public class MainFragment extends Fragment implements View.OnTouchListener {
         }
 
         Async.run(DayGoal::getCountDaysAccomplished, days -> {
-            mCoinsNumber.setText(days + " coins");
+            mCoinsNumber.setText(365 + " coins");
             //mCoinsNumberLeaderboard.setText(days + " coins");
         });
 

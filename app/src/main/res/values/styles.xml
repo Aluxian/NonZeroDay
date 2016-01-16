@@ -8,6 +8,7 @@
         <item name="android:textCursorDrawable">@drawable/shape_cursor</item>
         <item name="android:windowBackground">@color/primary</item>
         <item name="android:textColor">@color/accent</item>
+        <item name="android:actionModeBackground">@color/primaryDarkLighter</item>
         <item name="vpiCirclePageIndicatorStyle">@style/AppTheme.CircleIndicator</item>
     </style>
 
